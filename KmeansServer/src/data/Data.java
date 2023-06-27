@@ -18,6 +18,7 @@ import java.util.LinkedList;
 import java.util.Set;
 //import static data.OutOfRangeSampleSize.wrongRange;;
 
+
 public class Data {
 
 	private List<Example> data = new ArrayList<Example>();
@@ -25,26 +26,18 @@ public class Data {
 	private List<Attribute> attributeSet = new LinkedList<Attribute>();
 	private DbAccess db = new DbAccess();
 
-	/**
-	 * Costruttore di Data.
-	 * @param table
-	 * @throws SQLException
-	 * @throws EmptySetException
-	 * @throws NoValueException
-	 * @throws DatabaseConnectionException
-	 */
-	public Data(String table) throws SQLException, EmptySetException, NoValueException, DatabaseConnectionException {
+	public Data(String table) throws SQLException, EmptySetException, NoValueException, DatabaseConnectionException{
 		db.initConnection();
 		TableData td = new TableData(this.db);
 		TableSchema tblschm = new TableSchema(this.db, table);
-		this.data = td.getDistinctTransazioni(table); // viene riempita la tabella data con i dati 
-
-		Attribute attr; // ora riempiamo la lista di attribute(attributeSet)
+		// qui viene caricata la tabella tutta
+		this.data = td.getDistinctTransazioni(table);
+		Attribute attr;
 		for(int i = 0; i < tblschm.getNumberOfAttributes(); i++) {
 			if(tblschm.getColumn(i).isNumber()){
 				attr = new ContinuousAttribute(tblschm.getColumn(i).getColumnName(), 
-				i, (double)td.getAggregateColumnValue(table, tblschm.getColumn(i), QUERY_TYPE.MIN), 
-				(double)td.getAggregateColumnValue(table, tblschm.getColumn(i), QUERY_TYPE.MAX));
+				i, (double)((float)td.getAggregateColumnValue(table, tblschm.getColumn(i), QUERY_TYPE.MIN)), 
+				(double)((float)td.getAggregateColumnValue(table, tblschm.getColumn(i), QUERY_TYPE.MAX)));
 			}
 			else{
 				attr = new DiscreteAttribute(tblschm.getColumn(i).getColumnName(), i,
@@ -52,10 +45,11 @@ public class Data {
 			}
 			this.attributeSet.add(i, attr);
 		}
-
 		this.numberOfExamples = data.size();
 		db.closeConnection();
 	}
+
+
 /*
 	public Data() {
 		// TreeSet di suppporto
@@ -207,47 +201,24 @@ public class Data {
 		attributeSet.add(4, PlayTennisValues);
 
 	}
-*/
-
-/**
- * Restituisce il numero di righe della tabella.
- * @return
- * 
- */
+	*/
+	
 	public int getNumberOfExamples() {
 		return numberOfExamples;
 	}
 
-/**
- * Restituisce il numero di colonne della tabella.
- * @return
- */
 	public int getNumberOfAttributes() {
 		return attributeSet.size();
 	}
-
-/**
- * Restituisce il valore in posizione exampleIndex, attributeIndex.
- * @param exampleIndex
- * @param attributeIndex
- * @return
- */
+	
 	public Object getAttributeValue(int exampleIndex, int attributeIndex) {
 		return data.get(exampleIndex).get(attributeIndex);
 	}
-
-/**
- * Restituisce l'attribute in posizione index.
- * @param index
- * @return
- */
+	
 	public Attribute getAttribute(int index) {
 		return attributeSet.get(index);
 	}
 	
-/**
- * Stampa la tabella.
- */
 	public String toString() {
 
 		String table = new String();
@@ -264,11 +235,12 @@ public class Data {
 			table = table + "\n";
 		}
 		return table;
+
 	}
 
-/**
-* restituisce una riga di data (Tuple) in base al tipo di attributo che contiene la lista attributeSet
-*/
+	/*
+	 * restituisce una riga di data (Tuple) in base al tipo di attributo che contiene la lista attributeSet
+	 */
 	public Tuple getItemSet (int index) {
 
 		Tuple tupla = new Tuple(attributeSet.size());
@@ -277,19 +249,13 @@ public class Data {
 				tupla.add(new DiscreteItem((DiscreteAttribute)attributeSet.get(i), (String)data.get(index).get(i)), i);
 			}
 			else {
-				tupla.add(new ContinuousItem((ContinuousAttribute)attributeSet.get(i), (Double)data.get(index).get(i)), i);
+				tupla.add(new ContinuousItem((ContinuousAttribute)attributeSet.get(i), (double)((float)data.get(index).get(i))), i);
 			}
 		}
 
 		return tupla;
 	}
 
-/**
- * Restituisce un vettore di centroidi inizializzati.
- * @param k
- * @return
- * @throws OutOfRangeSampleSize
- */
 	public int [] sampling(int k) throws OutOfRangeSampleSize{
 		if (k <= 0 || k > numberOfExamples) {
             throw new OutOfRangeSampleSize("Numero di cluster fuori dal range possibile");
@@ -388,7 +354,7 @@ public class Data {
 		double tot = 0;
 		Iterator<Integer> it = idList.iterator();
 		while(it.hasNext()) {
-			tot += (double)getAttributeValue(it.next(), attribute.getIndex());
+			tot += (double)((float)getAttributeValue(it.next(), attribute.getIndex()));
 		}
 		return tot / idList.size();
 	}

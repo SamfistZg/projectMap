@@ -35,12 +35,6 @@ public class TableSchema {
 
 	List<Column> tableSchema = new ArrayList<Column>();
 	
-	/**
-	 * Costruttore di TableSchema.
-	 * @param db
-	 * @param tableName
-	 * @throws SQLException
-	 */
 	public TableSchema(DbAccess db, String tableName) throws SQLException {
 		this.db = db;
 		HashMap<String,String> mapSQL_JAVATypes = new HashMap<String, String>();

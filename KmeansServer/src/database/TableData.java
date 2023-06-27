@@ -10,16 +10,14 @@ import java.util.LinkedList; //P
 import java.util.List; //P
 import java.util.Set; //P
 import java.util.TreeSet; //P
-import database.TableSchema.Column; //P
+
 //import javax.naming.spi.DirStateFactory.Result; //NP
+
+import database.TableSchema.Column; //P
 
 public class TableData {
 	DbAccess db;
 
-	/**
-	 * Costruttore di TabelData.
-	 * @param db
-	 */
 	public TableData(DbAccess db) {
 		this.db = db;
 	}
@@ -28,7 +26,6 @@ public class TableData {
 	 * Ricava lo schema di "table", va a estrarre tutti i dati contenuti in table e va a inserire in una lista di example solo le tuple distinte.
 	 */
 	public List<Example> getDistinctTransazioni(String table) throws SQLException, EmptySetException {
-
 		TableSchema schema = new TableSchema(db, table);
 		List<Example> distinctTransazioni = new ArrayList<Example>();
 		//Connection con = db.getConnection(); bypassato richiamando direttamente la funzione, elimina la necessità dell'import, fatto anche nel metodo successivo
@@ -38,10 +35,10 @@ public class TableData {
 		Statement stmt = db.getConnection().createStatement();
 		ResultSet resultSet = stmt.executeQuery("SELECT DISTINCT * FROM " + table);
 		if (!resultSet.next()) { //lancia EmptySetException in caso resultSet sia vuoto
-            throw new EmptySetException("Empty ResultSet"); 
+            throw new EmptySetException("Empty set"); // messaggio più specifico?
         }
-		resultSet.beforeFirst(); // pone il cursore prima della prima riga 
-		while (resultSet.next()) {
+		//resultSet.beforeFirst();
+		do {
 			Example e = new Example();
 			for (int i = 0; i < schema.getNumberOfAttributes(); i++) {
 				if (schema.getColumn(i).isNumber()) {
@@ -51,7 +48,7 @@ public class TableData {
 				}
 			}
 			distinctTransazioni.add(e);
-		}
+		} while (resultSet.next());
 		resultSet.close();
 		stmt.close(); //aggiunta chiusura statement, fatto anche nei metodi successivi
 
@@ -85,6 +82,9 @@ public class TableData {
 		resultSet.close();
 		List<Example> distinctTransazioni = new ArrayList<Example>(distinctTuples);
 		*/
+
+
+		// eccezione EmptySetException da lanciare se ResultSet è vuoto
 		return distinctTransazioni;
 	}
 
@@ -99,7 +99,7 @@ public class TableData {
 
 		TreeSet<String> distinctColumns = new TreeSet<String>();
 		while (resultSet.next()) {
-			distinctColumns.add(resultSet.getString(column.getColumnName())); // perchè getString?
+			distinctColumns.add(resultSet.getString(column.getColumnName()));
 		}
 		resultSet.close();
 		stmt.close();
@@ -107,22 +107,22 @@ public class TableData {
 	}
 
 	/**
-	 * Restituisce il risultato della query_type applicato alla colonna "column" della tabella table.
+	 * Restituisce il risultato della query_type applicato alla colonna column della tabella table.
 	 */
 	public Object getAggregateColumnValue(String table, Column column, QUERY_TYPE aggregate) throws SQLException, NoValueException {
 		//Connection con = db.getConnection();
 		Statement stmt = db.getConnection().createStatement();
-		ResultSet resultSet = stmt.executeQuery("SELECT " + aggregate + "(" 
-		+ column.getColumnName() + ") FROM " + table);
-
+		String string = "SELECT " + aggregate + "(" + column.getColumnName() + ") FROM " + table;
+		ResultSet resultSet = stmt.executeQuery(string);
+		//System.out.println(resultSet.getFloat(column.getColumnName()));
 		if (!resultSet.next()) { //lancia NoValueException in caso resultSet sia vuoto o null
-            throw new NoValueException("resultSet vuoto");
-        } else if (resultSet.getObject(column.getColumnName()) == null) {
-			throw new NoValueException("Valori null in resultSet non ammessi");
+            throw new NoValueException("Valore non valido"); // messaggio più specifico?
+        } else if (resultSet.getObject(aggregate + "(" + column.getColumnName() + ")") == null) {
+			throw new NoValueException("Valore non valido");
 		}
-		Object aggregateColumnValue = resultSet.getObject(column.getColumnName());
+		Object aggregateColumnValue = resultSet.getObject(aggregate + "(" + column.getColumnName() + ")");
 		resultSet.close();
 		stmt.close();
-		return aggregateColumnValue; //cambiato il return perchè se restituiamo il ResultSet termina il metodo ma non viene chiuso il ResultSet, sprecando memoria.
+		return aggregateColumnValue; //cambiato il return perchè se restituiamo il ResultSet termina il metodo ma non viene chiuso il ResultSet, sprecando memoria
 	}
 }

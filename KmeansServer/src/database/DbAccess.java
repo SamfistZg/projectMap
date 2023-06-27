@@ -4,7 +4,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class DbAccess {
-    private String DRIVER_CLASS_NAME = "com.mysql.cj.jdbc.Driver";
+    private static final String DRIVER_CLASS_NAME = "com.mysql.cj.jdbc.Driver";
     private final String DBMS = "jdbc:mysql";
     private final String SERVER = "localhost";
     private final String DATABASE = "MapDB";
@@ -19,9 +19,9 @@ public class DbAccess {
         } catch(ClassNotFoundException e) {
             throw new DatabaseConnectionException("Driver non trovato", e);
         } 
-        String url = DBMS + "://" + SERVER + ":" + PORT + "/" + DATABASE;
+        String url = DBMS + "://" + SERVER + ":" + PORT + "/" + DATABASE + "?user=" + USER_ID + "&password=" + PASSWORD + "&serverTimezone=UTC";
         try {
-            conn = DriverManager.getConnection(url, USER_ID, PASSWORD);
+            conn = DriverManager.getConnection(url);
         } catch(SQLException s) {
             throw new DatabaseConnectionException("Database non trovato", s);
         }
