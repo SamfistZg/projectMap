@@ -12,6 +12,12 @@ public class MainTest {
 	private ObjectOutputStream out;
 	private ObjectInputStream in ; // stream con richieste del client
 	
+	/**
+	 * Costruttore di MainTest
+	 * @param ip
+	 * @param port
+	 * @throws IOException
+	 */
 	public MainTest(String ip, int port) throws IOException{
 		InetAddress addr = InetAddress.getByName(ip); //ip
 		System.out.println("addr = " + addr);
@@ -22,12 +28,16 @@ public class MainTest {
 		in = new ObjectInputStream(socket.getInputStream());	; // stream con richieste del client
 	}
 	
+	/**
+	 * Metodo che stamoa il menu e restituisce la scelta.
+	 * @return
+	 */
 	private int menu() {
 		int answer;
 		System.out.println("Scegli una opzione");
 		do {
 			System.out.println("(1) Carica Cluster da File");
-			System.out.println("(2) Carica Dati");
+			System.out.println("(2) Carica Dati"); // corrisponde al inizializzazione
 			System.out.print("Risposta:");
 			answer=Keyboard.readInt();
 		}
@@ -35,14 +45,17 @@ public class MainTest {
 		return answer;
 	}
 	
-	private String learningFromFile() throws SocketException,ServerException,IOException,ClassNotFoundException{
-		out.writeObject(3);
+	/**
+	 * Metodo che legge da un server socket e stampa.
+	 */
+	private String learningFromFile() throws SocketException, ServerException, IOException, ClassNotFoundException{
 		
+		out.writeObject(3);
 		System.out.print("Nome tabella:");
-		String tabName=Keyboard.readString();
+		String tabName = Keyboard.readString();
 		out.writeObject(tabName);
 		System.out.print("Numero iterate:");
-		int k=Keyboard.readInt();
+		int k = Keyboard.readInt(); // CHE VOR DIII
 		out.writeObject(k);
 		String result = (String)in.readObject();
 		if(result.equals("OK"))
@@ -51,10 +64,17 @@ public class MainTest {
 		
 	}
 
-	private void storeTableFromDb() throws SocketException,ServerException,IOException,ClassNotFoundException{
+	/**
+	 * Metodo che legge da un server socket ma non stampa.
+	 * @throws SocketException
+	 * @throws ServerException
+	 * @throws IOException
+	 * @throws ClassNotFoundException
+	 */
+	private void storeTableFromDb() throws SocketException, ServerException, IOException, ClassNotFoundException{
 		out.writeObject(0);
 		System.out.print("Nome tabella:");
-		String tabName=Keyboard.readString();
+		String tabName = Keyboard.readString();
 		out.writeObject(tabName);
 		String result = (String)in.readObject();
 		if(!result.equals("OK"))
@@ -62,20 +82,31 @@ public class MainTest {
 		
 	}
 
-	private String learningFromDbTable() throws SocketException,ServerException,IOException,ClassNotFoundException{
+	/**
+	 * Metodo che legge da server socket e stampa i cluster.
+	 * @return
+	 * @throws SocketException
+	 * @throws ServerException
+	 * @throws IOException
+	 * @throws ClassNotFoundException
+	 */
+	private String learningFromDbTable() throws SocketException, ServerException, IOException, ClassNotFoundException{
 		out.writeObject(1);
 		System.out.print("Numero di cluster:");
-		int k=Keyboard.readInt();
+		int k = Keyboard.readInt();
 		out.writeObject(k);
 		String result = (String)in.readObject();
 		if(result.equals("OK")){
-			System.out.println("Clustering output:"+in.readObject());
+			System.out.println("Clustering output:" + in.readObject());
 			return (String)in.readObject();
 		}
 		else throw new ServerException(result);
 	}
 	
-	private void storeClusterInFile() throws SocketException,ServerException,IOException,ClassNotFoundException{
+	/**
+	 * Metodo che salva i cluster 
+	 */
+	private void storeClusterInFile() throws SocketException, ServerException, IOException, ClassNotFoundException{
 		out.writeObject(2);
 		String result = (String)in.readObject();
 		if(!result.equals("OK"))
@@ -83,11 +114,11 @@ public class MainTest {
 	}
 
 	public static void main(String[] args) {
-		String ip=args[0];
-		int port=new Integer(args[1]).intValue();
-		MainTest main=null;
+		String ip = args[0];
+		int port = Integer.parseInt(args[1]);
+		MainTest main = null;
 		try {
-			main=new MainTest(ip,port);
+			main = new MainTest(ip, port);
 		}
 		catch (IOException e) {
 			System.out.println(e);
@@ -96,12 +127,12 @@ public class MainTest {
 		
 		
 		do {
-			int menuAnswer=main.menu();
+			int menuAnswer = main.menu();
 			switch(menuAnswer)
 			{
 				case 1:
 					try {
-						String kmeans=main.learningFromFile();
+						String kmeans = main.learningFromFile();
 						System.out.println(kmeans);
 					}
 					catch (SocketException e) {
@@ -124,17 +155,15 @@ public class MainTest {
 					break;
 				case 2: // learning from db
 				
-					while(true){
-						try{
+					while(true) 
+					{
+						try {
 							main.storeTableFromDb();
 							break; //esce fuori dal while
-						}
-						
-						catch (SocketException e) {
+						} catch (SocketException e) {
 							System.out.println(e);
 							return;
-						}
-						catch (FileNotFoundException e) {
+						} catch (FileNotFoundException e) {
 							System.out.println(e);
 							return;
 							
@@ -144,56 +173,43 @@ public class MainTest {
 						} catch (ClassNotFoundException e) {
 							System.out.println(e);
 							return;
-						}
-						catch (ServerException e) {
+						} catch (ServerException e) {
 							System.out.println(e.getMessage());
 						}
 					} //end while [viene fuori dal while con un db (in alternativa il programma termina)
 						
-					char answer='y';//itera per learning al variare di k
-					do{
-						try
-						{
-							String clusterSet=main.learningFromDbTable();
+					char answer = 'y';//itera per learning al variare di k
+					do {
+						try {
+							String clusterSet = main.learningFromDbTable();
 							System.out.println(clusterSet);
-							
-							main.storeClusterInFile();
-									
-						}
-						catch (SocketException e) {
+							main.storeClusterInFile();	
+						} catch (SocketException e) {
 							System.out.println(e);
 							return;
-						}
-						catch (FileNotFoundException e) {
+						} catch (FileNotFoundException e) {
 							System.out.println(e);
 							return;
-						} 
-						catch (ClassNotFoundException e) {
+						} catch (ClassNotFoundException e) {
 							System.out.println(e);
 							return;
-						}catch (IOException e) {
+						} catch (IOException e) {
 							System.out.println(e);
 							return;
-						}
-						catch (ServerException e) {
+						} catch (ServerException e) {
 							System.out.println(e.getMessage());
 						}
 						System.out.print("Vuoi ripetere l'esecuzione?(y/n)");
-						answer=Keyboard.readChar();
-					}
-					while(answer=='y');
+						answer = Keyboard.readChar();
+					} while(answer == 'y');
 					break; //fine case 2
 					default:
 					System.out.println("Opzione non valida!");
 			}
 			
 			System.out.print("Vuoi scegliere una nuova operazione da menu?(y/n)");
-			if(Keyboard.readChar()!='y')
+			if (Keyboard.readChar()!='y')
 				break;
-			}
-		while(true);
+			} while(true);
 		}
 }
-
-
-

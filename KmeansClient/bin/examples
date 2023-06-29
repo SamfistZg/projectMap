@@ -1,0 +1,136 @@
+// client che manda e riceve linee dal server
+import java.net.*;
+import java.io.*;
+
+public class JabberClient {
+public static void main(String[] args) throws IOException {
+    // indirizzo riservato al localhost 127.0.0.1
+    // si ipotizza che il server sia in esecuzione su localhost
+    // altrimenti va passato ip/dns della macchina su cui è in esecuzione
+    InetAddress addr = InetAddress.getByName("127.0.0.1"); 
+    System.out.println("addr = " + addr);
+    Socket socket = new Socket(addr,8080);
+    // Pone tutto in un blocco try-finally per assicurarsi che il socket sia chiuso:
+    try {
+        System.out.println("socket = " + socket);
+        BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+        // Flush automatico con PrintWriter:
+        PrintWriter out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream())), true);
+        for(int i = 0; i < 10; i ++) {
+            out.println("prova " + i);
+            String str = in.readLine();
+            System.out.println(str);
+        }
+        out.println("END");
+    } finally {
+        System.out.println("closing...");
+        socket.close();
+    }
+}
+}
+
+// Server che controlla se il client si mette in attesa
+import java.io.*;
+import java.net.*;
+
+public class JabberServer { //jabber = chiacchiera
+    // Scegli una port al di fuori del range 1-1024:
+    public static final int PORT = 8080;
+    public static void main(String[] args)
+    throws IOException {
+    ServerSocket s = new ServerSocket(PORT);
+    System.out.println("Started: " + s);
+    try {
+    // si blocca fino a quando non c’è una connessione
+    Socket socket = s.accept();
+    // connessione accettata
+    try {
+        System.out.println(
+        "Connessione accettata: "+ socket);
+        BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+        // Flush automatico con PrintWriter:
+        PrintWriter out =new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream())), true);
+        while (true) {
+            String str = in.readLine();
+            if (str.equals("END")) break;
+            System.out.println("Echoing: " + str);
+            out.println(str);
+        }
+        // chiude sempre i due socket...
+        } finally {
+            System.out.println("closing...");
+            socket.close();
+        }
+    } 
+    finally {
+        s.close();//ServerSocket
+    }
+}
+} 
+
+// Un server che usa il multithreading 
+import java.io.*;
+import java.net.*;
+
+public class MultiJabberServer {
+static final int PORT = 8080;
+public static void main(String[] args) throws IOException {
+    ServerSocket s = new ServerSocket(PORT);
+    System.out.println("Server Started");
+    try {
+    while(true) {
+        // Si blocca finchè non si verifica una connessione:
+        Socket socket = s.accept();
+        try {
+        new ServeOneJabber(socket);
+        } catch(IOException e) {
+        // Se fallisce chiude il socket,
+        // altrimenti il thread la chiuderà:
+        socket.close();
+        }
+    }
+} finally {
+    s.close();
+}
+}
+}
+
+// esempio di multithreading 
+class ServeOneJabber extends Thread {
+    private Socket socket;
+    private BufferedReader in;
+    private PrintWriter out;
+    public ServeOneJabber(Socket s) throws IOException {
+        socket = s;
+        in = new BufferedReader( new InputStreamReader(socket.getInputStream()));
+        out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream())), true);
+        // se una qualsiasi delle chiamate precedenti solleva una
+        // eccezione, il processo chiamante è responsabile della 
+        // chiusura del socket. Altrimenti lo chiuderà il thread 
+        start(); // Chiama run()
+    }
+    public void run() {
+        try {
+            while (true) {
+                String str = in.readLine();
+                if (str.equals("END")) break;
+                System.out.println("Echoing: " + str);
+                out.println(str);
+            }
+            System.out.println("closing...");
+        } catch(IOException e) {
+            System.err.println("IO Exception");
+        } finally {
+            try {
+                socket.close();
+            } catch(IOException e) {
+                System.err.println("Socket not closed");
+            }
+        }
+    }
+}
+
+
+
+ 
+
