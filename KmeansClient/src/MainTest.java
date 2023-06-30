@@ -29,15 +29,15 @@ public class MainTest {
 	}
 	
 	/**
-	 * Metodo che stamoa il menu e restituisce la scelta.
+	 * Metodo che stampa il menu e restituisce la scelta.
 	 * @return
 	 */
 	private int menu() {
 		int answer;
 		System.out.println("Scegli una opzione");
 		do {
-			System.out.println("(1) Carica Cluster da File");
-			System.out.println("(2) Carica Dati"); // corrisponde al inizializzazione
+			System.out.println("(1) Carica un risultato precedente da file");
+			System.out.println("(2) Esegui un nuovo risultato");
 			System.out.print("Risposta:");
 			answer=Keyboard.readInt();
 		}
@@ -46,7 +46,12 @@ public class MainTest {
 	}
 	
 	/**
-	 * Metodo che legge da un server socket e stampa.
+	 * Metodo che prende le informazioni da tastiera da parte dell'utente e restituisce l'oggetto sul file precompilato.
+	 * @return
+	 * @throws SocketException
+	 * @throws ServerException
+	 * @throws IOException
+	 * @throws ClassNotFoundException
 	 */
 	private String learningFromFile() throws SocketException, ServerException, IOException, ClassNotFoundException{
 		
@@ -55,17 +60,16 @@ public class MainTest {
 		String tabName = Keyboard.readString();
 		out.writeObject(tabName);
 		System.out.print("Numero iterate:");
-		int k = Keyboard.readInt(); // CHE VOR DIII
+		int k = Keyboard.readInt();
 		out.writeObject(k);
 		String result = (String)in.readObject();
 		if(result.equals("OK"))
 			return (String)in.readObject();
 		else throw new ServerException(result);
-		
 	}
 
 	/**
-	 * Metodo che legge da un server socket ma non stampa.
+	 * Metodo che chiede da tastiera all'utente il nome della tabella e lo restituisce al server socket.
 	 * @throws SocketException
 	 * @throws ServerException
 	 * @throws IOException
@@ -119,12 +123,10 @@ public class MainTest {
 		MainTest main = null;
 		try {
 			main = new MainTest(ip, port);
-		}
-		catch (IOException e) {
+		} catch (IOException e) {
 			System.out.println(e);
 			return;
 		}
-		
 		
 		do {
 			int menuAnswer = main.menu();

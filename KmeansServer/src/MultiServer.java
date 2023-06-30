@@ -1,8 +1,10 @@
 import java.io.IOException;
 import java.net.ServerSocket;
+import java.net.Socket;
 
 public class MultiServer {
-    int port = 8080;
+    private static final int DEFAULT_PORT = 8080;
+    private int port;
 
 
     /**
@@ -10,8 +12,19 @@ public class MultiServer {
      * @throws IOException
      */
     void run() throws IOException {
-        ServerSocket ss = new ServerSocket(port, port, null);
-    }
+        ServerSocket sS = new ServerSocket(port);
+        try{
+            Socket s = sS.accept();
+            try {
+                ServerOneClient sOneC = new ServerOneClient(s);
+            } finally {
+                s.close();
+            }
+        } finally {
+            sS.close();
+        }
+
+    }   
 
     /**
      * Costruttore di MultiServer.
@@ -21,11 +34,17 @@ public class MultiServer {
      public MultiServer(int port) throws IOException {
         this.port = port;
         run();
-
     }
 
     public static void main(String [] args) {
-        MultiServer ms = new MultiServer();
+        MultiServer ms = null;
+        try{
+            ms = new MultiServer(DEFAULT_PORT);
+            ms.run();
+        } catch (IOException e) {
+            System.err.println(e.getMessage());
+        }
+        
     }
 
 
