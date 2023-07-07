@@ -12,9 +12,10 @@ public class Example implements Comparable<Example> {
 	public Object get(int i) {
 		return example.get(i);
 	}
+
 	public int compareTo(Example ex) {
 		
-		int i=0;
+		int i = 0;
 		for(Object o : ex.example) {
 			if(!o.equals(this.example.get(i)))
 				return ((Comparable)o).compareTo(example.get(i));
@@ -22,6 +23,7 @@ public class Example implements Comparable<Example> {
 		}
 		return 0;
 	}
+
 	public String toString() {
 		String str = "";
 		for(Object o : example)

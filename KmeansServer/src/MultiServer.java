@@ -6,26 +6,6 @@ public class MultiServer {
     private static final int DEFAULT_PORT = 8080;
     private int port;
 
-
-    /**
-     * Metodo che acquisisce richieste dal client.
-     * @throws IOException
-     */
-    void run() throws IOException {
-        ServerSocket sS = new ServerSocket(port);
-        try{
-            Socket s = sS.accept();
-            try {
-                ServerOneClient sOneC = new ServerOneClient(s);
-            } finally {
-                s.close();
-            }
-        } finally {
-            sS.close();
-        }
-
-    }   
-
     /**
      * Costruttore di MultiServer.
      * @param port
@@ -36,18 +16,33 @@ public class MultiServer {
         run();
     }
 
+    /**
+     * Metodo che acquisisce richieste dal client.
+     * @throws IOException
+     */
+    void run() throws IOException {
+        ServerSocket sS = new ServerSocket(port);
+        try {
+
+            while(true) {
+            System.out.println("SONO DENTRO?");
+            Socket s = sS.accept();
+            try {
+                ServerOneClient sOneC = new ServerOneClient(s);
+            } finally {
+                s.close();
+            }
+        }
+        } finally {
+            sS.close();
+        }
+    } 
+
     public static void main(String [] args) {
-        MultiServer ms = null;
-        try{
-            ms = new MultiServer(DEFAULT_PORT);
-            ms.run();
+        try {
+            MultiServer ms = new MultiServer(DEFAULT_PORT); // il run è già nel costruttore
         } catch (IOException e) {
             System.err.println(e.getMessage());
         }
-        
     }
-
-
-
-
 }

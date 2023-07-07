@@ -25,7 +25,7 @@ public class MainTest {
 		System.out.println(socket);
 		
 		out = new ObjectOutputStream(socket.getOutputStream());
-		in = new ObjectInputStream(socket.getInputStream());	; // stream con richieste del client
+		in = new ObjectInputStream(socket.getInputStream());
 	}
 	
 	/**
@@ -118,8 +118,11 @@ public class MainTest {
 	}
 
 	public static void main(String[] args) {
-		String ip = args[0];
+		/*String ip = args[0];
 		int port = Integer.parseInt(args[1]);
+		*/
+		String ip = "0.0.0.0";
+		int port = 8080;
 		MainTest main = null;
 		try {
 			main = new MainTest(ip, port);

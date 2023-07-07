@@ -17,7 +17,7 @@ public class ServerOneClient extends Thread {
         this.socket = s;
         out = new ObjectOutputStream(socket.getOutputStream());
 		in = new ObjectInputStream(socket.getInputStream());
-        start();  //start
+        start();
     }
 
     /**
@@ -25,7 +25,14 @@ public class ServerOneClient extends Thread {
      */
     public void run() {
         try {
-            // yeah, dovrei comprare un maglione di guci
+            System.out.println("SI, MA VAI PIANO");
+            String str = (String)in.readObject();
+        } catch (IOException e) {
+            System.out.println("1");
+            System.err.println(e.getMessage());
+        } catch(ClassNotFoundException e) {
+            System.out.println("2");
+            System.err.println(e.getMessage());
         } finally {
             try {
                 socket.close();
