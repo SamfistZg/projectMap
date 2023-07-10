@@ -4,6 +4,7 @@ import java.net.*;
 import java.sql.SQLException;
 
 import data.Data;
+import data.OutOfRangeSampleSize;
 import database.DatabaseConnectionException;
 import database.EmptySetException;
 import database.NoValueException;
@@ -31,29 +32,42 @@ public class ServerOneClient extends Thread {
      */
     public void run() {
         try {
-            System.out.println("SI, MA VAI PIANO");
-            while(true)
+            boolean exit = true;
+            KMeansMiner kmeans = null;
+            Data data = null;
+            String nameTable = null;
+            int iterations = 0;
+            while(exit)
             {
                 int str = (Integer)in.readObject();
                 switch(str){
                     case 3:
                         String nameFile = (String)in.readObject();
-                        Data data = new Data(nameFile);
+                        data = new Data(nameFile);
                         nameFile += "_" + (Integer)in.readObject();
                         out.writeObject("OK");
-                        KMeansMiner kmeans = new KMeansMiner(nameFile);
+                        kmeans = new KMeansMiner(nameFile);
                         out.writeObject(kmeans.getC().toString(data));
+                        exit = false;
                         break;
                     case 0:
-                        String nameTable = (String)in.readObject();
-                        Data data_2 = new Data(nameTable);
+                        nameTable = (String)in.readObject();
+                        data = new Data(nameTable);
                         out.writeObject("OK");    
                         break;
                     case 1:
-                        int numeroIterate = (Integer)in.readObject();
+                        int numeroCluster = (Integer)in.readObject();
+                        System.out.println(numeroCluster);
                         out.writeObject("OK");
-                        KMeansMiner kmeans_2 = new KMeansMiner(numeroIterate);
-                        //out.writeObject(kmeans_2.getC().toString(data_2));
+                        kmeans = new KMeansMiner(numeroCluster);
+                        iterations = kmeans.kmeans(data); 
+                        out.writeObject(kmeans.getC().toString(data));
+                        break;
+                    case 2:
+                        kmeans.salva(nameTable + "_" + iterations + ".dat");
+                        out.writeObject("OK");
+                        exit = false;
+                        break;
                     default:
                         System.out.println("Qualcosa è andato storto :/");
                 }
@@ -75,6 +89,9 @@ public class ServerOneClient extends Thread {
             System.err.println(e.getMessage());
         } catch (DatabaseConnectionException e){
             System.out.println("6");
+            System.err.println(e.getMessage());
+        } catch (OutOfRangeSampleSize e){
+            System.out.println("7");
             System.err.println(e.getMessage());
         } finally {
             try {
