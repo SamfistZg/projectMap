@@ -44,7 +44,7 @@ public class ServerOneClient extends Thread {
                     case 3:
                         String nameFile = (String)in.readObject();
                         data = new Data(nameFile);
-                        nameFile += "_" + (Integer)in.readObject();
+                        nameFile += "_" + (Integer)in.readObject() + ".dat";
                         out.writeObject("OK");
                         kmeans = new KMeansMiner(nameFile);
                         out.writeObject(kmeans.getC().toString(data));
@@ -57,10 +57,10 @@ public class ServerOneClient extends Thread {
                         break;
                     case 1:
                         int numeroCluster = (Integer)in.readObject();
-                        System.out.println(numeroCluster);
                         out.writeObject("OK");
                         kmeans = new KMeansMiner(numeroCluster);
-                        iterations = kmeans.kmeans(data); 
+                        iterations = kmeans.kmeans(data);
+                        out.writeObject(iterations + " iterations");
                         out.writeObject(kmeans.getC().toString(data));
                         break;
                     case 2:
@@ -73,25 +73,18 @@ public class ServerOneClient extends Thread {
                 }
         }
         } catch (IOException e) {
-            System.out.println("1");
             System.err.println(e.getMessage());
         } catch (ClassNotFoundException e) {
-            System.out.println("2");
             System.err.println(e.getMessage());
         } catch (SQLException e){
-            System.out.println("3");
             System.err.println(e.getMessage());
-        } catch (EmptySetException e){
-            System.out.println("4");
+        } catch (EmptySetException e) {
             System.err.println(e.getMessage());
-        } catch (NoValueException e){
-            System.out.println("5");
+        } catch (NoValueException e) {
             System.err.println(e.getMessage());
-        } catch (DatabaseConnectionException e){
-            System.out.println("6");
+        } catch (DatabaseConnectionException e) {
             System.err.println(e.getMessage());
-        } catch (OutOfRangeSampleSize e){
-            System.out.println("7");
+        } catch (OutOfRangeSampleSize e) {
             System.err.println(e.getMessage());
         } finally {
             try {

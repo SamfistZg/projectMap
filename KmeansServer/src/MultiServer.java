@@ -30,7 +30,6 @@ public class MultiServer {
         try {
 
             while(true) {
-            System.out.println("SONO DENTRO?");
             Socket s = sS.accept();
             try {
                 ServerOneClient sOneC = new ServerOneClient(s);
