@@ -121,7 +121,7 @@ public class MainTest {
 		/*String ip = args[0];
 		int port = Integer.parseInt(args[1]);
 		*/
-		String ip = "0.0.0.0";
+		String ip = "127.0.0.1";
 		int port = 8080;
 		MainTest main = null;
 		try {

@@ -1,10 +1,13 @@
 import java.io.IOException;
+import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 
 public class MultiServer {
     private static final int DEFAULT_PORT = 8080;
+    private static final String DEFAULT_IP_ADDRESS = "127.0.0.1";
     private int port;
+    private String ip;
 
     /**
      * Costruttore di MultiServer.
@@ -13,6 +16,7 @@ public class MultiServer {
      */
      public MultiServer(int port) throws IOException {
         this.port = port;
+        this.ip = DEFAULT_IP_ADDRESS;
         run();
     }
 
@@ -21,7 +25,8 @@ public class MultiServer {
      * @throws IOException
      */
     void run() throws IOException {
-        ServerSocket sS = new ServerSocket(port);
+        InetAddress newAddress = InetAddress.getByName(ip);
+        ServerSocket sS = new ServerSocket(port, 50, newAddress);
         try {
 
             while(true) {
