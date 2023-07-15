@@ -6,7 +6,6 @@ import java.net.InetAddress;
 import java.net.Socket;
 import java.net.SocketException;
 import keyboardinput.Keyboard;
-
 public class MainTest {
 
 	private ObjectOutputStream out;
@@ -34,7 +33,7 @@ public class MainTest {
 	 */
 	private int menu() {
 		int answer;
-		System.out.println("Scegli una opzione");
+		System.out.println("Scegli un'opzione");
 		do {
 			System.out.println("(1) Carica un risultato precedente da file");
 			System.out.println("(2) Esegui un nuovo risultato");
@@ -121,6 +120,7 @@ public class MainTest {
 		/*String ip = args[0];
 		int port = Integer.parseInt(args[1]);
 		*/
+		new GUI();
 		String ip = "127.0.0.1";
 		int port = 8080;
 		MainTest main = null;
