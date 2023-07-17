@@ -117,12 +117,23 @@ public class MainTest {
 	}
 
 	public static void main(String[] args) {
-		/*String ip = args[0];
-		int port = Integer.parseInt(args[1]);
-		*/
-		new GUI();
-		String ip = "127.0.0.1";
-		int port = 8080;
+		String ip;
+		int port;
+		if (args.length > 0) {
+			ip = args[0];
+			port = Integer.parseInt(args[1]);
+		} else {
+			ip = "127.0.0.1";
+			port = 8080;
+		}
+
+		
+		try {
+			new GUI();
+		} catch (Exception e) {
+			System.err.println(e.getMessage());
+		}
+		
 		MainTest main = null;
 		try {
 			main = new MainTest(ip, port);
@@ -216,5 +227,6 @@ public class MainTest {
 			if (Keyboard.readChar()!='y')
 				break;
 			} while(true);
-		}
+			
+	}
 }
