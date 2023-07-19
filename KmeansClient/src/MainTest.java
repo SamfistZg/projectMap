@@ -5,11 +5,23 @@ import java.io.ObjectOutputStream;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.net.SocketException;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 import keyboardinput.Keyboard;
-public class MainTest {
+
+public class MainTest extends JFrame {
 
 	private ObjectOutputStream out;
 	private ObjectInputStream in ; // stream con richieste del client
+	private JFrame frame;
+	private Container container;
+	private JLabel label;
+	private JButton button1;
+	private JButton button2;
 	
 	/**
 	 * Costruttore di MainTest
@@ -18,6 +30,8 @@ public class MainTest {
 	 * @throws IOException
 	 */
 	public MainTest(String ip, int port) throws IOException{
+		super("Progetto MAP 2022/23");
+
 		InetAddress addr = InetAddress.getByName(ip); //ip
 		System.out.println("addr = " + addr);
 		Socket socket = new Socket(addr, port); //Port
@@ -25,6 +39,25 @@ public class MainTest {
 		
 		out = new ObjectOutputStream(socket.getOutputStream());
 		in = new ObjectInputStream(socket.getInputStream());
+
+        this.frame = new JFrame();
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setBounds(0, 0, 500, 500);
+        this.container = frame.getContentPane();
+        container.setLayout(null);
+
+        this.label = new JLabel("Scegli un'opzione: ");
+        label.setBounds(200, 50, 200, 40);   
+        container.add(label);
+        this.button1 = new JButton("Carica un risultato da file");
+        button1.setBounds(100, 120, 300, 40);   
+        container.add(button1);
+        this.button2 = new JButton("Esegui un nuovo risultato");
+        button2.setBounds(100, 200, 300, 40); 
+        container.add(button2);
+        
+        frame.setVisible(true);
+        frame.setResizable(false);
 	}
 	
 	/**
@@ -128,12 +161,6 @@ public class MainTest {
 		}
 
 		
-		try {
-			new GUI();
-		} catch (Exception e) {
-			System.err.println(e.getMessage());
-		}
-		
 		MainTest main = null;
 		try {
 			main = new MainTest(ip, port);
@@ -141,7 +168,40 @@ public class MainTest {
 			System.out.println(e);
 			return;
 		}
-		
+
+		main.button1.addActionListener(new ActionListener() {
+           @Override
+           public void actionPerformed(ActionEvent e) {
+            try {
+                String kmeans = main.learningFromFile();
+					System.out.println(kmeans);
+				} catch (SocketException e1) {
+                    System.out.println(e1);
+                    return;
+                } catch (FileNotFoundException e2) {
+                    System.out.println(e2);
+                    return ;
+                } catch (IOException e3) {
+                    System.out.println(e3);
+                    return;
+                } catch (ClassNotFoundException e4) {
+                    System.out.println(e4);
+                    return;
+                } catch (ServerException e5) {
+                    System.out.println(e5.getMessage());
+                }
+            
+           }
+        });
+
+        main.button2.addActionListener(new ActionListener() {
+            @Override
+           public void actionPerformed(ActionEvent e) {
+            //case 2
+
+           }
+        });
+		/*
 		do {
 			int menuAnswer = main.menu();
 			switch(menuAnswer)
@@ -227,6 +287,6 @@ public class MainTest {
 			if (Keyboard.readChar()!='y')
 				break;
 			} while(true);
-			
+	*/		
 	}
 }

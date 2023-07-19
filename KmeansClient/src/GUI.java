@@ -1,44 +1,62 @@
 import javax.swing.*;
 
-
 import java.awt.*;
 import java.awt.event.ActionListener;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.net.SocketException;
 import java.awt.event.ActionEvent;
 
 public class GUI extends JFrame {
-
-    private JTextArea textArea;
-    private JButton button1;
-    private JButton button2;
-
+    
 	public GUI() {
 
 		super("Progetto MAP 2022/23");
-        setSize(1000, 600);
-        setLocationRelativeTo(null);
-        setResizable(false);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setVisible(true);
-        setLayout(new BorderLayout());
-        textArea = new JTextArea("Scegli un'opzione: ");
-        button1 = new JButton("Carica un risultato da file");
-        button2 = new JButton("Esegui un nuovo risultato");
+        JFrame frame = new JFrame();
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setBounds(0, 0, 500, 500);
+        Container container = frame.getContentPane();
+        container.setLayout(null);
 
-        add(textArea);
-        add(button1);
-        add(button2);
-        textArea.setSize(400, 60);
-        button1.setSize(400, 60);
-        button2.setSize(400, 60);
-
-        textArea.setLocation(300, 50);
-        button1.setLocation(300, 150);
-        button2.setLocation(300,250);
+        JLabel label = new JLabel("Scegli un'opzione: ");
+        label.setBounds(200, 50, 200, 40);   
+        container.add(label);
+        JButton button1 = new JButton("Carica un risultato da file");
+        button1.setBounds(100, 120, 300, 40);   
+        container.add(button1);
+        JButton button2 = new JButton("Esegui un nuovo risultato");
+        button2.setBounds(100, 200, 300, 40); 
+        container.add(button2);
+        
+        frame.setVisible(true);
+        frame.setResizable(false);
 
         button1.addActionListener(new ActionListener() {
            @Override
            public void actionPerformed(ActionEvent e) {
-            //case 1
+            try {
+                String kmeans = main.learningFromFile();
+					System.out.println(kmeans);
+				}
+                catch (SocketException e) {
+                    System.out.println(e);
+                    return;
+                }
+                catch (FileNotFoundException e) {
+                    System.out.println(e);
+                    return ;
+                } catch (IOException e) {
+                    System.out.println(e);
+                    return;
+                } catch (ClassNotFoundException e) {
+                    System.out.println(e);
+                    return;
+                }
+                catch (ServerException e) {
+                    System.out.println(e.getMessage());
+                }
             
            }
         });
