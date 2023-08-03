@@ -17,11 +17,7 @@ public class MainTest extends JFrame {
 
 	private ObjectOutputStream out;
 	private ObjectInputStream in ; // stream con richieste del client
-	private JFrame frame;
-	private Container container;
-	private JLabel label;
-	private JButton button1;
-	private JButton button2;
+	private static JFrame frame;
 	
 	/**
 	 * Costruttore di MainTest
@@ -29,7 +25,7 @@ public class MainTest extends JFrame {
 	 * @param port
 	 * @throws IOException
 	 */
-	public MainTest(String ip, int port) throws IOException{
+	public MainTest(String ip, int port) throws IOException {
 		super("Progetto MAP 2022/23");
 
 		InetAddress addr = InetAddress.getByName(ip); //ip
@@ -39,25 +35,9 @@ public class MainTest extends JFrame {
 		
 		out = new ObjectOutputStream(socket.getOutputStream());
 		in = new ObjectInputStream(socket.getInputStream());
-
-        this.frame = new JFrame();
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setBounds(0, 0, 500, 500);
-        this.container = frame.getContentPane();
-        container.setLayout(null);
-
-        this.label = new JLabel("Scegli un'opzione: ");
-        label.setBounds(200, 50, 200, 40);   
-        container.add(label);
-        this.button1 = new JButton("Carica un risultato da file");
-        button1.setBounds(100, 120, 300, 40);   
-        container.add(button1);
-        this.button2 = new JButton("Esegui un nuovo risultato");
-        button2.setBounds(100, 200, 300, 40); 
-        container.add(button2);
-        
-        frame.setVisible(true);
-        frame.setResizable(false);
+		frame = new JFrame();
+		SceneMain homePage = new SceneMain();
+		homePage.setVisible(true);
 	}
 	
 	/**
@@ -161,7 +141,7 @@ public class MainTest extends JFrame {
 		}
 
 		
-		MainTest main = null;
+		MainTest main;
 		try {
 			main = new MainTest(ip, port);
 		} catch (IOException e) {
@@ -174,7 +154,8 @@ public class MainTest extends JFrame {
            public void actionPerformed(ActionEvent e) {
             try {
                 String kmeans = main.learningFromFile();
-					System.out.println(kmeans);
+				new Scene1().setVisible(true);
+				System.out.println(kmeans);
 				} catch (SocketException e1) {
                     System.out.println(e1);
                     return;
@@ -289,4 +270,48 @@ public class MainTest extends JFrame {
 			} while(true);
 	*/		
 	}
+
+	public static class SceneMain extends JFrame {
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setBounds(0, 0, 500, 500);
+        Container container = frame.getContentPane();
+        container.setLayout(null);
+
+        JLabel label = new JLabel("Scegli un'opzione: ");
+        label.setBounds(200, 50, 200, 40);   
+        container.add(label);
+        JButton button1 = new JButton("Carica un risultato da file");
+        button1.setBounds(100, 120, 300, 40);   
+        container.add(button1);
+        JButton button2 = new JButton("Esegui un nuovo risultato");
+        button2.setBounds(100, 200, 300, 40); 
+        container.add(button2);
+        
+        frame.setVisible(true);
+        frame.setResizable(false);
+	}
+
+	public static class Scene1 extends JFrame {
+			public Scene1() { 
+				frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        		frame.setBounds(0, 0, 500, 500);
+        		Container container1 = frame.getContentPane();
+        		container1.setLayout(null);
+
+				JLabel label1 = new JLabel("Nome tabella: ");
+				label1.setBounds(200, 50, 200, 40); 
+				container1.add(label1);
+
+				JTextArea textArea1 = new JTextArea("Inserisci nome tabella...");
+				container1.add(textArea1);
+				setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+				
+				JTextArea textArea2 = new JTextArea("Inserisci numero iterate...");
+				container1.add(textArea2);
+				setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+				String nameTable = textArea1.getText();
+				String nrIterate = textArea2.getText();
+			}
+		}
 }
