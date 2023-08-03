@@ -40,22 +40,22 @@ public class GUI extends JFrame {
                 String kmeans = main.learningFromFile();
 					System.out.println(kmeans);
 				}
-                catch (SocketException e) {
-                    System.out.println(e);
+                catch (SocketException e1) {
+                    System.out.println(e1);
                     return;
                 }
-                catch (FileNotFoundException e) {
-                    System.out.println(e);
+                catch (FileNotFoundException e2) {
+                    System.out.println(e2);
                     return ;
-                } catch (IOException e) {
-                    System.out.println(e);
+                } catch (IOException e3) {
+                    System.out.println(e3);
                     return;
-                } catch (ClassNotFoundException e) {
-                    System.out.println(e);
+                } catch (ClassNotFoundException e4) {
+                    System.out.println(e4);
                     return;
                 }
-                catch (ServerException e) {
-                    System.out.println(e.getMessage());
+                catch (ServerException e5) {
+                    System.out.println(e5.getMessage());
                 }
             
            }

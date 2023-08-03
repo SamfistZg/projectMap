@@ -36,8 +36,8 @@ public class MainTest extends JFrame {
 		out = new ObjectOutputStream(socket.getOutputStream());
 		in = new ObjectInputStream(socket.getInputStream());
 		frame = new JFrame();
-		SceneMain homePage = new SceneMain();
-		homePage.setVisible(true);
+		//SceneMain homePage = new SceneMain();
+		//homePage.setVisible(true);
 	}
 	
 	/**
@@ -149,6 +149,10 @@ public class MainTest extends JFrame {
 			return;
 		}
 
+		main.MainScene();
+
+
+		/*
 		main.button1.addActionListener(new ActionListener() {
            @Override
            public void actionPerformed(ActionEvent e) {
@@ -182,6 +186,10 @@ public class MainTest extends JFrame {
 
            }
         });
+		*/
+
+
+
 		/*
 		do {
 			int menuAnswer = main.menu();
@@ -271,47 +279,117 @@ public class MainTest extends JFrame {
 	*/		
 	}
 
-	public static class SceneMain extends JFrame {
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setBounds(0, 0, 500, 500);
-        Container container = frame.getContentPane();
-        container.setLayout(null);
+	public void MainScene() {
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setBounds(0, 0, 500, 500);
+		Container container = frame.getContentPane();
+		container.setLayout(null);
 
-        JLabel label = new JLabel("Scegli un'opzione: ");
-        label.setBounds(200, 50, 200, 40);   
-        container.add(label);
-        JButton button1 = new JButton("Carica un risultato da file");
-        button1.setBounds(100, 120, 300, 40);   
-        container.add(button1);
-        JButton button2 = new JButton("Esegui un nuovo risultato");
-        button2.setBounds(100, 200, 300, 40); 
-        container.add(button2);
-        
-        frame.setVisible(true);
-        frame.setResizable(false);
+		JLabel label = new JLabel("Scegli un'opzione: ");
+		label.setBounds(200, 50, 200, 40);   
+		container.add(label);
+		JButton button1 = new JButton("Carica un risultato da file");
+		button1.setBounds(100, 120, 300, 40);   
+		container.add(button1);
+		JButton button2 = new JButton("Esegui un nuovo risultato");
+		button2.setBounds(100, 200, 300, 40); 
+		container.add(button2);
+
+		frame.setVisible(true);
+		frame.setResizable(false);
+
+		button1.addActionListener(new ActionListener() {
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			container.setVisible(false);
+			Scene1();
+			}
+		});
+
+		button2.addActionListener(new ActionListener() {
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			//case 2
+
+			}
+		});
 	}
 
-	public static class Scene1 extends JFrame {
-			public Scene1() { 
-				frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        		frame.setBounds(0, 0, 500, 500);
-        		Container container1 = frame.getContentPane();
-        		container1.setLayout(null);
+	/*
+	public static class SceneMain extends JFrame {
+		public SceneMain() {
+			frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+			frame.setBounds(0, 0, 500, 500);
+			Container container = frame.getContentPane();
+			container.setLayout(null);
 
-				JLabel label1 = new JLabel("Nome tabella: ");
-				label1.setBounds(200, 50, 200, 40); 
-				container1.add(label1);
+			JLabel label = new JLabel("Scegli un'opzione: ");
+			label.setBounds(200, 50, 200, 40);   
+			container.add(label);
+			JButton button1 = new JButton("Carica un risultato da file");
+			button1.setBounds(100, 120, 300, 40);   
+			container.add(button1);
+			JButton button2 = new JButton("Esegui un nuovo risultato");
+			button2.setBounds(100, 200, 300, 40); 
+			container.add(button2);
 
-				JTextArea textArea1 = new JTextArea("Inserisci nome tabella...");
-				container1.add(textArea1);
-				setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-				
-				JTextArea textArea2 = new JTextArea("Inserisci numero iterate...");
-				container1.add(textArea2);
-				setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+			button1.addActionListener(new ActionListener() {
+           	@Override
+           	public void actionPerformed(ActionEvent e) {
+            try {
+                String kmeans = main.learningFromFile();
+				new Scene1().setVisible(true);
+				System.out.println(kmeans);
+				} catch (SocketException e1) {
+                    System.out.println(e1);
+                    return;
+                } catch (FileNotFoundException e2) {
+                    System.out.println(e2);
+                    return ;
+                } catch (IOException e3) {
+                    System.out.println(e3);
+                    return;
+                } catch (ClassNotFoundException e4) {
+                    System.out.println(e4);
+                    return;
+                } catch (ServerException e5) {
+                    System.out.println(e5.getMessage());
+                }
+            
+           		}
+        	});
+			
+			frame.setVisible(true);
+			frame.setResizable(false);
+		}
+	}
+	*/
 
-				String nameTable = textArea1.getText();
-				String nrIterate = textArea2.getText();
-			}
+	public void Scene1() {
+
+		/*
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setBounds(0, 0, 500, 500);
+		*/
+
+		//Container container1 = frame.getContentPane();
+		Container container1 = new Container();
+		container1.setLayout(null);
+		container1.setVisible(true);
+
+		JLabel label1 = new JLabel("Nome tabella: ");
+		label1.setBounds(200, 50, 200, 40); 
+		container1.add(label1);
+
+		JTextArea textArea1 = new JTextArea("Inserisci nome tabella...");
+		container1.add(textArea1);
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
+		JTextArea textArea2 = new JTextArea("Inserisci numero iterate...");
+		container1.add(textArea2);
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+		String nameTable = textArea1.getText();
+		String nrIterate = textArea2.getText();	
 		}
 }
