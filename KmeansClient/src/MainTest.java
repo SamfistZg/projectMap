@@ -40,7 +40,7 @@ public class MainTest extends JFrame {
         setSize(400, 300);
 
         // Crea la prima scena
-        Scene1 scene1 = new Scene1();
+        Scene1 scene1 = new Scene1(this);
         setScene(scene1);
 
         setVisible(true);
@@ -82,14 +82,13 @@ public class MainTest extends JFrame {
 	 * @throws IOException
 	 * @throws ClassNotFoundException
 	 */
-	private String learningFromFile() throws SocketException, ServerException, IOException, ClassNotFoundException{
+	String learningFromFile(String nameTable , String nrIterate) throws SocketException, ServerException, IOException, ClassNotFoundException{
 		
 		out.writeObject(3);
-		System.out.print("Nome tabella:");
-		String tabName = Keyboard.readString();
-		out.writeObject(tabName);
+		String tabName = nameTable;
+		out.writeObject(nameTable);
 		System.out.print("Numero iterate:");
-		int k = Keyboard.readInt();
+		int k = Integer.parseInt(nrIterate);
 		out.writeObject(k);
 		String result = (String)in.readObject();
 		if(result.equals("OK"))
@@ -299,7 +298,7 @@ public class MainTest extends JFrame {
 
 
 class Scene1 extends JPanel {
-    public Scene1() {
+    public Scene1(MainTest m) {
 		JLabel label = new JLabel("Scegli un'opzione: ");
 		label.setBounds(200, 50, 200, 40);   
 		add(label);
@@ -314,7 +313,7 @@ class Scene1 extends JPanel {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			MainTest mainTest = (MainTest) SwingUtilities.getWindowAncestor(Scene1.this);
-            Scene2 scene2 = new Scene2();
+            Scene2 scene2 = new Scene2(m);
             mainTest.setScene(scene2);
 			}
 		});
@@ -323,7 +322,7 @@ class Scene1 extends JPanel {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			MainTest mainTest = (MainTest) SwingUtilities.getWindowAncestor(Scene1.this);
-            Scene3 scene3 = new Scene3();
+            Scene3 scene3 = new Scene3(m);
             mainTest.setScene(scene3);
 			}
 		});
@@ -331,7 +330,7 @@ class Scene1 extends JPanel {
 }
 
 class Scene2 extends JPanel {
-    public Scene2() {
+    public Scene2(MainTest m) {
 
         JLabel label1 = new JLabel("Nome tabella: ");
 		label1.setBounds(200, 50, 200, 40); 
@@ -354,6 +353,28 @@ class Scene2 extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 String nameTable = textArea1.getText();
 		        String nrIterate = textArea2.getText();     
+				try{
+					String kmeans = m.learningFromFile(nameTable, nrIterate);
+					MainTest mainTest = (MainTest) SwingUtilities.getWindowAncestor(Scene2.this);
+					Scene4 scene4 = new Scene4(m, kmeans);
+					mainTest.setScene(scene4);
+				} catch (SocketException e1) {
+						System.out.println(e1);
+						return;
+					}
+					catch (FileNotFoundException e2) {
+						System.out.println(e2);
+						return ;
+					} catch (IOException e3) {
+						System.out.println(e3);
+						return;
+					} catch (ClassNotFoundException e4) {
+						System.out.println(e4);
+						return;
+					}
+					catch (ServerException e5) {
+						System.out.println(e5.getMessage());
+					}
             }
         });	
         add(confirmButton);
@@ -362,7 +383,7 @@ class Scene2 extends JPanel {
         previousButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 MainTest mainTest = (MainTest) SwingUtilities.getWindowAncestor(Scene2.this);
-                Scene1 scene1 = new Scene1();
+                Scene1 scene1 = new Scene1(m);
                 mainTest.setScene(scene1);
             }
         });
@@ -372,7 +393,7 @@ class Scene2 extends JPanel {
 }
 
 class Scene3 extends JPanel {
-    public Scene3() {
+    public Scene3(MainTest m) {
 
         JLabel label1 = new JLabel("Nome tabella: ");
 		label1.setBounds(200, 50, 200, 40); 
@@ -394,7 +415,27 @@ class Scene3 extends JPanel {
         previousButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 MainTest mainTest = (MainTest) SwingUtilities.getWindowAncestor(Scene3.this);
-                Scene1 scene1 = new Scene1();
+                Scene1 scene1 = new Scene1(m);
+                mainTest.setScene(scene1);
+            }
+        });
+
+        add(previousButton);
+    }
+}
+
+class Scene4 extends JPanel {
+    public Scene4(MainTest m, String kmeans) {
+
+        JLabel label1 = new JLabel(kmeans);
+		//label1.setBounds(200, 50, 200, 40); 
+		add(label1);
+
+        JButton previousButton = new JButton("ANNULLA");
+        previousButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                MainTest mainTest = (MainTest) SwingUtilities.getWindowAncestor(Scene4.this);
+                Scene1 scene1 = new Scene1(m);
                 mainTest.setScene(scene1);
             }
         });
