@@ -17,7 +17,7 @@ public class MainTest extends JFrame {
 
 	private ObjectOutputStream out;
 	private ObjectInputStream in ; // stream con richieste del client
-	private static JFrame frame;
+	private JPanel currentScene;
 	
 	/**
 	 * Costruttore di MainTest
@@ -35,9 +35,15 @@ public class MainTest extends JFrame {
 		
 		out = new ObjectOutputStream(socket.getOutputStream());
 		in = new ObjectInputStream(socket.getInputStream());
-		frame = new JFrame();
-		//SceneMain homePage = new SceneMain();
-		//homePage.setVisible(true);
+		setTitle("Progetto MAP 2022/23");
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setSize(400, 300);
+
+        // Crea la prima scena
+        Scene1 scene1 = new Scene1();
+        setScene(scene1);
+
+        setVisible(true);
 	}
 	
 	/**
@@ -56,6 +62,17 @@ public class MainTest extends JFrame {
 		while(answer<=0 || answer>2);
 		return answer;
 	}
+
+	public void setScene(JPanel scene) {
+        if (currentScene != null) {
+            remove(currentScene);
+        }
+
+        currentScene = scene;
+        add(currentScene);
+        revalidate();
+        repaint();
+    }
 	
 	/**
 	 * Metodo che prende le informazioni da tastiera da parte dell'utente e restituisce l'oggetto sul file precompilato.
@@ -139,17 +156,16 @@ public class MainTest extends JFrame {
 			ip = "127.0.0.1";
 			port = 8080;
 		}
-
-		
-		MainTest main;
-		try {
-			main = new MainTest(ip, port);
-		} catch (IOException e) {
-			System.out.println(e);
-			return;
-		}
-
-		main.MainScene();
+			SwingUtilities.invokeLater(new Runnable() {
+				public void run() {
+					try {
+						new MainTest(ip, port);
+					} catch (IOException e) {
+					System.out.println(e);
+					return;
+					}
+				}
+			});
 
 
 		/*
@@ -279,117 +295,110 @@ public class MainTest extends JFrame {
 	*/		
 	}
 
-	public void MainScene() {
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setBounds(0, 0, 500, 500);
-		Container container = frame.getContentPane();
-		container.setLayout(null);
+}
 
+
+class Scene1 extends JPanel {
+    public Scene1() {
 		JLabel label = new JLabel("Scegli un'opzione: ");
 		label.setBounds(200, 50, 200, 40);   
-		container.add(label);
+		add(label);
 		JButton button1 = new JButton("Carica un risultato da file");
 		button1.setBounds(100, 120, 300, 40);   
-		container.add(button1);
+		add(button1);
 		JButton button2 = new JButton("Esegui un nuovo risultato");
 		button2.setBounds(100, 200, 300, 40); 
-		container.add(button2);
+		add(button2);
 
-		frame.setVisible(true);
-		frame.setResizable(false);
-
-		button1.addActionListener(new ActionListener() {
+        button1.addActionListener(new ActionListener() {
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			container.setVisible(false);
-			Scene1();
+			MainTest mainTest = (MainTest) SwingUtilities.getWindowAncestor(Scene1.this);
+            Scene2 scene2 = new Scene2();
+            mainTest.setScene(scene2);
 			}
 		});
 
 		button2.addActionListener(new ActionListener() {
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			//case 2
-
+			MainTest mainTest = (MainTest) SwingUtilities.getWindowAncestor(Scene1.this);
+            Scene3 scene3 = new Scene3();
+            mainTest.setScene(scene3);
 			}
 		});
-	}
+    }
+}
 
-	/*
-	public static class SceneMain extends JFrame {
-		public SceneMain() {
-			frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-			frame.setBounds(0, 0, 500, 500);
-			Container container = frame.getContentPane();
-			container.setLayout(null);
+class Scene2 extends JPanel {
+    public Scene2() {
 
-			JLabel label = new JLabel("Scegli un'opzione: ");
-			label.setBounds(200, 50, 200, 40);   
-			container.add(label);
-			JButton button1 = new JButton("Carica un risultato da file");
-			button1.setBounds(100, 120, 300, 40);   
-			container.add(button1);
-			JButton button2 = new JButton("Esegui un nuovo risultato");
-			button2.setBounds(100, 200, 300, 40); 
-			container.add(button2);
-
-			button1.addActionListener(new ActionListener() {
-           	@Override
-           	public void actionPerformed(ActionEvent e) {
-            try {
-                String kmeans = main.learningFromFile();
-				new Scene1().setVisible(true);
-				System.out.println(kmeans);
-				} catch (SocketException e1) {
-                    System.out.println(e1);
-                    return;
-                } catch (FileNotFoundException e2) {
-                    System.out.println(e2);
-                    return ;
-                } catch (IOException e3) {
-                    System.out.println(e3);
-                    return;
-                } catch (ClassNotFoundException e4) {
-                    System.out.println(e4);
-                    return;
-                } catch (ServerException e5) {
-                    System.out.println(e5.getMessage());
-                }
-            
-           		}
-        	});
-			
-			frame.setVisible(true);
-			frame.setResizable(false);
-		}
-	}
-	*/
-
-	public void Scene1() {
-
-		/*
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setBounds(0, 0, 500, 500);
-		*/
-
-		//Container container1 = frame.getContentPane();
-		Container container1 = new Container();
-		container1.setLayout(null);
-		container1.setVisible(true);
-
-		JLabel label1 = new JLabel("Nome tabella: ");
+        JLabel label1 = new JLabel("Nome tabella: ");
 		label1.setBounds(200, 50, 200, 40); 
-		container1.add(label1);
+		add(label1);
 
 		JTextArea textArea1 = new JTextArea("Inserisci nome tabella...");
-		container1.add(textArea1);
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        textArea1.setPreferredSize(new Dimension(250, 20)); 
+		add(textArea1);
+
+        JLabel label2 = new JLabel("Numero Iterate: ");
+		label2.setBounds(200, 50, 200, 40); 
+		add(label2);
 		
 		JTextArea textArea2 = new JTextArea("Inserisci numero iterate...");
-		container1.add(textArea2);
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        textArea2.setPreferredSize(new Dimension(250, 20)); 
+		add(textArea2);
 
-		String nameTable = textArea1.getText();
-		String nrIterate = textArea2.getText();	
-		}
+        JButton confirmButton = new JButton("Esegui l'operazione");
+        confirmButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                String nameTable = textArea1.getText();
+		        String nrIterate = textArea2.getText();     
+            }
+        });	
+        add(confirmButton);
+
+        JButton previousButton = new JButton("ANNULLA");
+        previousButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                MainTest mainTest = (MainTest) SwingUtilities.getWindowAncestor(Scene2.this);
+                Scene1 scene1 = new Scene1();
+                mainTest.setScene(scene1);
+            }
+        });
+
+        add(previousButton);
+    }
+}
+
+class Scene3 extends JPanel {
+    public Scene3() {
+
+        JLabel label1 = new JLabel("Nome tabella: ");
+		label1.setBounds(200, 50, 200, 40); 
+		add(label1);
+
+		JTextArea textArea1 = new JTextArea("Inserisci nome tabella...");
+        textArea1.setPreferredSize(new Dimension(250, 20)); 
+		add(textArea1);
+
+        JButton confirmButton = new JButton("Esegui l'operazione");
+        confirmButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                String nameTable = textArea1.getText();     
+            }
+        });	
+        add(confirmButton);
+
+        JButton previousButton = new JButton("ANNULLA");
+        previousButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                MainTest mainTest = (MainTest) SwingUtilities.getWindowAncestor(Scene3.this);
+                Scene1 scene1 = new Scene1();
+                mainTest.setScene(scene1);
+            }
+        });
+
+        add(previousButton);
+    }
 }
