@@ -85,9 +85,7 @@ public class MainTest extends JFrame {
 	String learningFromFile(String nameTable , String nrIterate) throws SocketException, ServerException, IOException, ClassNotFoundException{
 		
 		out.writeObject(3);
-		String tabName = nameTable;
 		out.writeObject(nameTable);
-		System.out.print("Numero iterate:");
 		int k = Integer.parseInt(nrIterate);
 		out.writeObject(k);
 		String result = (String)in.readObject();
