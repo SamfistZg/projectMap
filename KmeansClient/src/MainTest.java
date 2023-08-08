@@ -37,7 +37,7 @@ public class MainTest extends JFrame {
 		in = new ObjectInputStream(socket.getInputStream());
 		setTitle("Progetto MAP 2022/23");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(400, 300);
+        setSize(450, 600);
 
         // Crea la prima scena
         Scene1 scene1 = new Scene1(this);
