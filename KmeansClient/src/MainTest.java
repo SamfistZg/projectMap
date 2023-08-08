@@ -353,12 +353,6 @@ class Scene2 extends JPanel {
 		        String nrIterate = textArea2.getText();     
 				try{
 					String kmeans = m.learningFromFile(nameTable, nrIterate);
-					kmeans = "<html>" + kmeans;
-					for(int i = 0; i<kmeans.length(); i++) { // capire qua
-						if (kmeans.charAt(i) == '\n') {
-							kmeans.charAt(i)= '<br/>';
-						}
-					}
 					MainTest mainTest = (MainTest) SwingUtilities.getWindowAncestor(Scene2.this);
 					Scene4 scene4 = new Scene4(m, kmeans);
 					mainTest.setScene(scene4);
