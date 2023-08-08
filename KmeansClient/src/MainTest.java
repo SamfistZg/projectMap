@@ -45,23 +45,6 @@ public class MainTest extends JFrame {
 
         setVisible(true);
 	}
-	
-	/**
-	 * Metodo che stampa il menu e restituisce la scelta.
-	 * @return
-	 */
-	private int menu() {
-		int answer;
-		System.out.println("Scegli un'opzione");
-		do {
-			System.out.println("(1) Carica un risultato precedente da file");
-			System.out.println("(2) Esegui un nuovo risultato");
-			System.out.print("Risposta:");
-			answer=Keyboard.readInt();
-		}
-		while(answer<=0 || answer>2);
-		return answer;
-	}
 
 	public void setScene(JPanel scene) {
         if (currentScene != null) {
@@ -101,11 +84,9 @@ public class MainTest extends JFrame {
 	 * @throws IOException
 	 * @throws ClassNotFoundException
 	 */
-	private void storeTableFromDb() throws SocketException, ServerException, IOException, ClassNotFoundException{
+	void storeTableFromDb(String nameTable) throws SocketException, ServerException, IOException, ClassNotFoundException{
 		out.writeObject(0);
-		System.out.print("Nome tabella:");
-		String tabName = Keyboard.readString();
-		out.writeObject(tabName);
+		out.writeObject(nameTable);
 		String result = (String)in.readObject();
 		if(!result.equals("OK"))
 			throw new ServerException(result);
@@ -120,15 +101,15 @@ public class MainTest extends JFrame {
 	 * @throws IOException
 	 * @throws ClassNotFoundException
 	 */
-	private String learningFromDbTable() throws SocketException, ServerException, IOException, ClassNotFoundException{
+	String learningFromDbTable(String nrCluster) throws SocketException, ServerException, IOException, ClassNotFoundException{
 		out.writeObject(1);
-		System.out.print("Numero di cluster:");
-		int k = Keyboard.readInt();
+		int k = Integer.parseInt(nrCluster);
 		out.writeObject(k);
 		String result = (String)in.readObject();
-		if(result.equals("OK")){
-			System.out.println("Clustering output:" + in.readObject());
-			return (String)in.readObject();
+
+		if(result.equals("OK")) {
+			String text = "<html><br/>Clustering output: " + in.readObject() + "<br/>";
+			return text + (String)in.readObject() + "</html>";
 		}
 		else throw new ServerException(result);
 	}
@@ -136,7 +117,7 @@ public class MainTest extends JFrame {
 	/**
 	 * Metodo che salva i cluster 
 	 */
-	private void storeClusterInFile() throws SocketException, ServerException, IOException, ClassNotFoundException{
+	void storeClusterInFile() throws SocketException, ServerException, IOException, ClassNotFoundException{
 		out.writeObject(2);
 		String result = (String)in.readObject();
 		if(!result.equals("OK"))
@@ -162,138 +143,10 @@ public class MainTest extends JFrame {
 					return;
 					}
 				}
-			});
-
-
-		/*
-		main.button1.addActionListener(new ActionListener() {
-           @Override
-           public void actionPerformed(ActionEvent e) {
-            try {
-                String kmeans = main.learningFromFile();
-				new Scene1().setVisible(true);
-				System.out.println(kmeans);
-				} catch (SocketException e1) {
-                    System.out.println(e1);
-                    return;
-                } catch (FileNotFoundException e2) {
-                    System.out.println(e2);
-                    return ;
-                } catch (IOException e3) {
-                    System.out.println(e3);
-                    return;
-                } catch (ClassNotFoundException e4) {
-                    System.out.println(e4);
-                    return;
-                } catch (ServerException e5) {
-                    System.out.println(e5.getMessage());
-                }
-            
-           }
-        });
-
-        main.button2.addActionListener(new ActionListener() {
-            @Override
-           public void actionPerformed(ActionEvent e) {
-            //case 2
-
-           }
-        });
-		*/
-
-
-
-		/*
-		do {
-			int menuAnswer = main.menu();
-			switch(menuAnswer)
-			{
-				case 1:
-					try {
-						String kmeans = main.learningFromFile();
-						System.out.println(kmeans);
-					}
-					catch (SocketException e) {
-						System.out.println(e);
-						return;
-					}
-					catch (FileNotFoundException e) {
-						System.out.println(e);
-						return ;
-					} catch (IOException e) {
-						System.out.println(e);
-						return;
-					} catch (ClassNotFoundException e) {
-						System.out.println(e);
-						return;
-					}
-					catch (ServerException e) {
-						System.out.println(e.getMessage());
-					}
-					break;
-				case 2: // learning from db
-				
-					while(true) 
-					{
-						try {
-							main.storeTableFromDb();
-							break; //esce fuori dal while
-						} catch (SocketException e) {
-							System.out.println(e);
-							return;
-						} catch (FileNotFoundException e) {
-							System.out.println(e);
-							return;
-							
-						} catch (IOException e) {
-							System.out.println(e);
-							return;
-						} catch (ClassNotFoundException e) {
-							System.out.println(e);
-							return;
-						} catch (ServerException e) {
-							System.out.println(e.getMessage());
-						}
-					} //end while [viene fuori dal while con un db (in alternativa il programma termina)
-						
-					char answer = 'y';//itera per learning al variare di k
-					do {
-						try {
-							String clusterSet = main.learningFromDbTable();
-							System.out.println(clusterSet);
-							main.storeClusterInFile();	
-						} catch (SocketException e) {
-							System.out.println(e);
-							return;
-						} catch (FileNotFoundException e) {
-							System.out.println(e);
-							return;
-						} catch (ClassNotFoundException e) {
-							System.out.println(e);
-							return;
-						} catch (IOException e) {
-							System.out.println(e);
-							return;
-						} catch (ServerException e) {
-							System.out.println(e.getMessage());
-						}
-						System.out.print("Vuoi ripetere l'esecuzione?(y/n)");
-						answer = Keyboard.readChar();
-					} while(answer == 'y');
-					break; //fine case 2
-					default:
-					System.out.println("Opzione non valida!");
-			}
-			
-			System.out.print("Vuoi scegliere una nuova operazione da menu?(y/n)");
-			if (Keyboard.readChar()!='y')
-				break;
-			} while(true);
-	*/		
+			});	
 	}
 
 }
-
 
 class Scene1 extends JPanel {
     public Scene1(MainTest m) {
@@ -391,7 +244,7 @@ class Scene2 extends JPanel {
 }
 
 /*
- * Scena in cui si vuole rinizializzare un risultato.
+ * Scena in cui si elabora un nuovo risultato.
  */
 class Scene3 extends JPanel {
     public Scene3(MainTest m) {
@@ -404,10 +257,67 @@ class Scene3 extends JPanel {
         textArea1.setPreferredSize(new Dimension(250, 20)); 
 		add(textArea1);
 
+		JLabel label2 = new JLabel("Numero di cluster: ");
+		label2.setBounds(200, 50, 200, 40); 
+		add(label2);
+		
+		JTextArea textArea2 = new JTextArea("Inserisci numero di cluster...");
+        textArea2.setPreferredSize(new Dimension(250, 20)); 
+		add(textArea2);
+
         JButton confirmButton = new JButton("Esegui l'operazione");
         confirmButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                String nameTable = textArea1.getText();     
+                String nameTable = textArea1.getText();
+					while(true) 
+					{
+						try {
+							m.storeTableFromDb(nameTable);
+							break;
+						} catch (SocketException e1) {
+							System.out.println(e1.getMessage());
+							return;
+						} catch (FileNotFoundException e2) {
+							System.out.println(e2.getMessage());
+							return;
+						} catch (IOException e3) {
+							System.out.println(e3.getMessage());
+							return;
+						} catch (ClassNotFoundException e4) {
+							System.out.println(e4.getMessage());
+							return;
+						} catch (ServerException e5) {
+							System.out.println(e5.getMessage());
+						}
+					} 
+
+					char answer = 'n';
+					do {
+						try {
+							String nrCluster = textArea2.getText();
+							String clusterSet = m.learningFromDbTable(nrCluster);
+							m.storeClusterInFile();	
+							MainTest mainTest = (MainTest) SwingUtilities.getWindowAncestor(Scene3.this);
+							Scene4 scene4 = new Scene4(m, clusterSet);
+							mainTest.setScene(scene4);
+						} catch (SocketException e1) {
+							System.out.println(e1.getMessage());
+							return;
+						} catch (FileNotFoundException e2) {
+							System.out.println(e2.getMessage());
+							return;
+						} catch (ClassNotFoundException e3) {
+							System.out.println(e3.getMessage());
+							return;
+						} catch (IOException e4) {
+							System.out.println(e4.getMessage());
+							return;
+						} catch (ServerException e5) {
+							System.out.println(e5.getMessage());
+						}
+						System.out.print("Vuoi ripetere l'esecuzione?(y/n)");
+						//answer = Keyboard.readChar();
+					} while(answer == 'y');
             }
         });	
         add(confirmButton);
@@ -420,11 +330,13 @@ class Scene3 extends JPanel {
                 mainTest.setScene(scene1);
             }
         });
-
         add(previousButton);
     }
 }
 
+/*
+ * Scena che stampa il risultato di un kmeans caricato da file.
+ */
 class Scene4 extends JPanel {
     public Scene4(MainTest m, String kmeans) {
 
@@ -440,7 +352,6 @@ class Scene4 extends JPanel {
                 mainTest.setScene(scene1);
             }
         });
-
         add(previousButton);
     }
 }
