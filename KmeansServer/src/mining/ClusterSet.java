@@ -60,12 +60,13 @@ public class ClusterSet implements Serializable {
 
     public String toString() {
 
-        String str = "";
+        String str = "<html>";
         for(int i = 0; i<C.length; i++){
-            if(C[i] != null){
-                str += "Cluster "+i+": "+C[i]+"\n";
+            if(C[i] != null) {
+                str += "Cluster "+i+": "+C[i]+"<br/>";
             }
         }
+        str += "</html>";
         return str;
 
     }
