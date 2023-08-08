@@ -32,13 +32,12 @@ public class ServerOneClient extends Thread {
      */
     public void run() {
         try {
-            boolean exit = true;
+            boolean exit;
             KMeansMiner kmeans = null;
             Data data = null;
             String nameTable = null;
             int iterations = 0;
-            while(exit)
-            {
+            do {
                 int str = (Integer)in.readObject();
                 switch(str){
                     case 3:
@@ -48,7 +47,6 @@ public class ServerOneClient extends Thread {
                         out.writeObject("OK");
                         kmeans = new KMeansMiner(nameFile);
                         out.writeObject(kmeans.getC().toString(data));
-                        exit = false;
                         break;
                     case 0:
                         nameTable = (String)in.readObject();
@@ -66,12 +64,12 @@ public class ServerOneClient extends Thread {
                     case 2:
                         kmeans.salva(nameTable + "_" + iterations + ".dat");
                         out.writeObject("OK");
-                        exit = false;
                         break;
                     default:
                         System.out.println("Qualcosa è andato storto :/");
                 }
-        }
+                exit = in.readBoolean();
+            } while (exit);
         } catch (IOException e) {
             System.err.println(e.getMessage());
         } catch (ClassNotFoundException e) {

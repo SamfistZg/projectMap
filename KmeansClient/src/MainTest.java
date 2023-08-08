@@ -145,21 +145,21 @@ public class MainTest {
 						System.out.println(kmeans);
 					}
 					catch (SocketException e) {
-						System.out.println(e);
+						System.err.println(e.getMessage());
 						return;
 					}
 					catch (FileNotFoundException e) {
-						System.out.println(e);
+						System.err.println(e.getMessage());
 						return ;
 					} catch (IOException e) {
-						System.out.println(e);
+						System.err.println(e.getMessage());
 						return;
 					} catch (ClassNotFoundException e) {
-						System.out.println(e);
+						System.err.println(e.getMessage());
 						return;
 					}
 					catch (ServerException e) {
-						System.out.println(e.getMessage());
+						System.err.println(e.getMessage());
 					}
 					break;
 				case 2: // learning from db
@@ -170,20 +170,20 @@ public class MainTest {
 							main.storeTableFromDb();
 							break; //esce fuori dal while
 						} catch (SocketException e) {
-							System.out.println(e);
+							System.err.println(e.getMessage());
 							return;
 						} catch (FileNotFoundException e) {
-							System.out.println(e);
+							System.err.println(e.getMessage());
 							return;
 							
 						} catch (IOException e) {
-							System.out.println(e);
+							System.err.println(e.getMessage());
 							return;
 						} catch (ClassNotFoundException e) {
-							System.out.println(e);
+							System.err.println(e.getMessage());
 							return;
 						} catch (ServerException e) {
-							System.out.println(e.getMessage());
+							System.err.println(e.getMessage());
 						}
 					} //end while [viene fuori dal while con un db (in alternativa il programma termina)
 						
@@ -194,19 +194,19 @@ public class MainTest {
 							System.out.println(clusterSet);
 							main.storeClusterInFile();	
 						} catch (SocketException e) {
-							System.out.println(e);
+							System.err.println(e.getMessage());
 							return;
 						} catch (FileNotFoundException e) {
-							System.out.println(e);
+							System.err.println(e.getMessage());
 							return;
 						} catch (ClassNotFoundException e) {
-							System.out.println(e);
+							System.err.println(e.getMessage());
 							return;
 						} catch (IOException e) {
-							System.out.println(e);
+							System.err.println(e.getMessage());
 							return;
 						} catch (ServerException e) {
-							System.out.println(e.getMessage());
+							System.err.println(e.getMessage());
 						}
 						System.out.print("Vuoi ripetere l'esecuzione?(y/n)");
 						answer = Keyboard.readChar();
@@ -215,11 +215,23 @@ public class MainTest {
 					default:
 					System.out.println("Opzione non valida!");
 			}
-			
-			System.out.print("Vuoi scegliere una nuova operazione da menu?(y/n)");
-			if (Keyboard.readChar()!='y')
+			//l'algoritmo accetta altre lettere oltre la n per chiudere
+			System.out.print("Vuoi scegliere una nuova operazione da menu? (y/n)");
+			if (Keyboard.readChar()!='y') {
+				try {
+					main.out.writeBoolean(false);
+				} catch (IOException e) {
+					System.err.println(e.getMessage());
+				}
 				break;
-			} while(true);
+			} else {
+				try {
+					main.out.writeBoolean(true);
+				} catch (IOException e) {
+					System.err.println(e.getMessage());
+				}
+			}
+		} while(true);
 			
 	}
 }
