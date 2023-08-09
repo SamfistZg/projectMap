@@ -10,6 +10,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.BorderLayout;
 
 import keyboardinput.Keyboard;
 
@@ -37,7 +38,8 @@ public class MainTest extends JFrame {
 		in = new ObjectInputStream(socket.getInputStream());
 		setTitle("Progetto MAP 2022/23");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(450, 600);
+        setSize(500, 500);
+		setResizable(false);
 
         // Crea la prima scena
         Scene1 scene1 = new Scene1(this);
@@ -150,15 +152,31 @@ public class MainTest extends JFrame {
 
 class Scene1 extends JPanel {
     public Scene1(MainTest m) {
+		JPanel panel = new JPanel();
+        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+		panel.add(Box.createVerticalStrut(100));
+
+		JLabel titleLabel = new JLabel("KMeans");
+        titleLabel.setFont(new Font("Arial", Font.BOLD, 50)); 
+		panel.add(titleLabel);
+		panel.add(Box.createVerticalStrut(10));
+
 		JLabel label = new JLabel("Scegli un'opzione: ");
+		label.setFont(new Font("Arial", Font.BOLD, 20)); 
 		label.setBounds(200, 50, 200, 40);   
-		add(label);
+		panel.add(label);
+		panel.add(Box.createVerticalStrut(10));
+
 		JButton button1 = new JButton("Carica un risultato da file");
 		button1.setBounds(100, 120, 300, 40);   
-		add(button1);
+		panel.add(button1);
+		panel.add(Box.createVerticalStrut(10));
+
 		JButton button2 = new JButton("Esegui un nuovo risultato");
 		button2.setBounds(100, 200, 300, 40); 
-		add(button2);
+		panel.add(button2);
+
+		add(panel);
 
         button1.addActionListener(new ActionListener() {
 		@Override
@@ -182,22 +200,30 @@ class Scene1 extends JPanel {
 
 class Scene2 extends JPanel {
     public Scene2(MainTest m) {
+		JPanel panel = new JPanel();
+        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 
         JLabel label1 = new JLabel("Nome tabella: ");
+		label1.setFont(new Font("Arial", Font.BOLD, 20)); 
 		label1.setBounds(200, 50, 200, 40); 
-		add(label1);
+		panel.add(Box.createVerticalStrut(10));
+		panel.add(label1);
 
 		JTextArea textArea1 = new JTextArea("Inserisci nome tabella...");
-        textArea1.setPreferredSize(new Dimension(250, 20)); 
-		add(textArea1);
+        textArea1.setPreferredSize(new Dimension(200, 20)); 
+		panel.add(Box.createVerticalStrut(10));
+		panel.add(textArea1);
 
         JLabel label2 = new JLabel("Numero Iterate: ");
+		label2.setFont(new Font("Arial", Font.BOLD, 20)); 
 		label2.setBounds(200, 50, 200, 40); 
-		add(label2);
+		panel.add(Box.createVerticalStrut(10));
+		panel.add(label2);
 		
 		JTextArea textArea2 = new JTextArea("Inserisci numero iterate...");
-        textArea2.setPreferredSize(new Dimension(250, 20)); 
-		add(textArea2);
+        textArea2.setPreferredSize(new Dimension(200, 20)); 
+		panel.add(Box.createVerticalStrut(10));
+		panel.add(textArea2);
 
         JButton confirmButton = new JButton("Esegui l'operazione");
         confirmButton.addActionListener(new ActionListener() {
@@ -228,7 +254,9 @@ class Scene2 extends JPanel {
 					}
             }
         });	
-        add(confirmButton);
+		confirmButton.setBounds(100, 120, 300, 40);
+		panel.add(Box.createVerticalStrut(10));
+        panel.add(confirmButton);
 
         JButton previousButton = new JButton("ANNULLA");
         previousButton.addActionListener(new ActionListener() {
@@ -238,8 +266,11 @@ class Scene2 extends JPanel {
                 mainTest.setScene(scene1);
             }
         });
+		previousButton.setBounds(100, 120, 300, 40);
+		panel.add(Box.createVerticalStrut(10));
+        panel.add(previousButton);
 
-        add(previousButton);
+		add(panel);
     }
 }
 
@@ -248,22 +279,30 @@ class Scene2 extends JPanel {
  */
 class Scene3 extends JPanel {
     public Scene3(MainTest m) {
+		JPanel panel = new JPanel();
+        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 
         JLabel label1 = new JLabel("Nome tabella: ");
+		label1.setFont(new Font("Arial", Font.BOLD, 20)); 
 		label1.setBounds(200, 50, 200, 40); 
-		add(label1);
+		panel.add(Box.createVerticalStrut(10));
+		panel.add(label1);
 
 		JTextArea textArea1 = new JTextArea("Inserisci nome tabella...");
-        textArea1.setPreferredSize(new Dimension(250, 20)); 
-		add(textArea1);
+        textArea1.setPreferredSize(new Dimension(200, 20)); 
+		panel.add(Box.createVerticalStrut(10));
+		panel.add(textArea1);
 
 		JLabel label2 = new JLabel("Numero di cluster: ");
+		label2.setFont(new Font("Arial", Font.BOLD, 20)); 
 		label2.setBounds(200, 50, 200, 40); 
-		add(label2);
+		panel.add(Box.createVerticalStrut(10));
+		panel.add(label2);
 		
 		JTextArea textArea2 = new JTextArea("Inserisci numero di cluster...");
-        textArea2.setPreferredSize(new Dimension(250, 20)); 
-		add(textArea2);
+        textArea2.setPreferredSize(new Dimension(200, 20)); 
+		panel.add(Box.createVerticalStrut(10));
+		panel.add(textArea2);
 
         JButton confirmButton = new JButton("Esegui l'operazione");
         confirmButton.addActionListener(new ActionListener() {
@@ -320,7 +359,8 @@ class Scene3 extends JPanel {
 					} while(answer == 'y');
             }
         });	
-        add(confirmButton);
+		panel.add(Box.createVerticalStrut(10));
+        panel.add(confirmButton);
 
         JButton previousButton = new JButton("ANNULLA");
         previousButton.addActionListener(new ActionListener() {
@@ -330,7 +370,9 @@ class Scene3 extends JPanel {
                 mainTest.setScene(scene1);
             }
         });
-        add(previousButton);
+		panel.add(Box.createVerticalStrut(10));
+        panel.add(previousButton);
+		add(panel);
     }
 }
 
@@ -343,6 +385,10 @@ class Scene4 extends JPanel {
         JLabel label1 = new JLabel(kmeans);
 		//label1.setBounds(200, 50, 200, 40); 
 		add(label1);
+
+		JScrollPane scrollPane = new JScrollPane(label1);
+		scrollPane.setPreferredSize(new Dimension(450, 400)); 
+		add(scrollPane);
 
         JButton previousButton = new JButton("ANNULLA");
         previousButton.addActionListener(new ActionListener() {
