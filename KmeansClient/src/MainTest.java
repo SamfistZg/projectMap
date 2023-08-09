@@ -242,6 +242,8 @@ public class MainTest {
 				if (next == 'n') {
 					try {
 						main.out.writeObject(false);
+						main.out.close();
+						main.in.close();
 					} catch (IOException e) {
 						System.err.println(e.getMessage());
 					}
