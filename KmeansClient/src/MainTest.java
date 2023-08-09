@@ -37,7 +37,7 @@ public class MainTest {
 		do {
 			System.out.println("(1) Carica un risultato precedente da file");
 			System.out.println("(2) Esegui un nuovo risultato");
-			System.out.print("Risposta:");
+			System.out.print("Risposta: ");
 			answer=Keyboard.readInt();
 		}
 		while(answer<=0 || answer>2);
@@ -55,10 +55,10 @@ public class MainTest {
 	private String learningFromFile() throws SocketException, ServerException, IOException, ClassNotFoundException{
 		
 		out.writeObject(3);
-		System.out.print("Nome tabella:");
+		System.out.print("Nome tabella: ");
 		String tabName = Keyboard.readString();
 		out.writeObject(tabName);
-		System.out.print("Numero iterate:");
+		System.out.print("Numero iterate: ");
 		int k = Keyboard.readInt();
 		out.writeObject(k);
 		String result = (String)in.readObject();
@@ -76,7 +76,7 @@ public class MainTest {
 	 */
 	private void storeTableFromDb() throws SocketException, ServerException, IOException, ClassNotFoundException{
 		out.writeObject(0);
-		System.out.print("Nome tabella:");
+		System.out.print("Nome tabella: ");
 		String tabName = Keyboard.readString();
 		out.writeObject(tabName);
 		String result = (String)in.readObject();
@@ -95,12 +95,12 @@ public class MainTest {
 	 */
 	private String learningFromDbTable() throws SocketException, ServerException, IOException, ClassNotFoundException{
 		out.writeObject(1);
-		System.out.print("Numero di cluster:");
+		System.out.print("Numero di cluster: ");
 		int k = Keyboard.readInt();
 		out.writeObject(k);
 		String result = (String)in.readObject();
 		if(result.equals("OK")){
-			System.out.println("Clustering output:" + in.readObject());
+			System.out.println("Clustering output: " + in.readObject());
 			return (String)in.readObject();
 		}
 		else throw new ServerException(result);
@@ -134,11 +134,10 @@ public class MainTest {
 			System.out.println(e);
 			return;
 		}
-		
+		boolean iter = true;
 		do {
 			int menuAnswer = main.menu();
-			switch(menuAnswer)
-			{
+			switch(menuAnswer) {
 				case 1:
 					try {
 						String kmeans = main.learningFromFile();
@@ -163,9 +162,7 @@ public class MainTest {
 					}
 					break;
 				case 2: // learning from db
-				
-					while(true) 
-					{
+					while(true) {
 						try {
 							main.storeTableFromDb();
 							break; //esce fuori dal while
@@ -208,30 +205,71 @@ public class MainTest {
 						} catch (ServerException e) {
 							System.err.println(e.getMessage());
 						}
-						System.out.print("Vuoi ripetere l'esecuzione?(y/n)");
+						do {
+							System.out.println("Vuoi ripetere l'esecuzione? (y/n)");
+							System.out.print("Risposta: ");
+							answer = Keyboard.readChar();
+							if (answer == 'y') {
+								try {
+									main.out.writeObject(true);
+								} catch (IOException e) {
+									System.err.println(e.getMessage());
+								}
+							} else if (answer != 'n') {
+								System.out.println("Risposta non valida!");
+							}
+						} while (answer != 'y' && answer != 'n');
+						/*System.out.println("Vuoi ripetere l'esecuzione? (y/n)");
+						System.out.print("Risposta: ");
 						answer = Keyboard.readChar();
+						if (answer == 'y') {
+							try {
+								main.out.writeObject(true);
+							} catch (IOException e) {
+								System.err.println(e.getMessage());
+							}
+						}*/
 					} while(answer == 'y');
 					break; //fine case 2
-					default:
+				default:
 					System.out.println("Opzione non valida!");
 			}
-			//l'algoritmo accetta altre lettere oltre la n per chiudere
-			System.out.print("Vuoi scegliere una nuova operazione da menu? (y/n)");
-			if (Keyboard.readChar()!='y') {
+			char next;
+			do {
+				System.out.println("Vuoi scegliere una nuova operazione da menu? (y/n)");
+				System.out.print("Risposta: ");
+				next = Keyboard.readChar();
+				if (next == 'n') {
+					try {
+						main.out.writeObject(false);
+					} catch (IOException e) {
+						System.err.println(e.getMessage());
+					}
+					iter = false;
+				} else if (next == 'y') {
+					try {
+						main.out.writeObject(true);
+					} catch (IOException e) {
+						System.err.println(e.getMessage());
+					}
+				} else {
+					System.out.println("Risposta non valida!");
+				}
+			} while (next != 'y' && next != 'n');
+			/*if (Keyboard.readChar()!='y') {
 				try {
-					main.out.writeBoolean(false);
+					main.out.writeObject(false);
 				} catch (IOException e) {
 					System.err.println(e.getMessage());
 				}
 				break;
 			} else {
 				try {
-					main.out.writeBoolean(true);
+					main.out.writeObject(true);
 				} catch (IOException e) {
 					System.err.println(e.getMessage());
 				}
-			}
-		} while(true);
-			
+			}*/
+		} while(iter);
 	}
 }
