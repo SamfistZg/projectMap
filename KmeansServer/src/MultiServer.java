@@ -3,6 +3,9 @@ import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 
+/**
+ * Classe che rappresenta un server in grado di ascoltare richieste da diversi client
+ */
 public class MultiServer {
     private static final int DEFAULT_PORT = 8080;
     private static final String DEFAULT_IP_ADDRESS = "127.0.0.1";
@@ -30,7 +33,7 @@ public class MultiServer {
         try {
 
             while(true) {
-            Socket s = sS.accept();
+                Socket s = sS.accept();
             try {
                 ServerOneClient sOneC = new ServerOneClient(s);
             } finally {

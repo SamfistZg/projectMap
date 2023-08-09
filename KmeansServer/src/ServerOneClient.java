@@ -9,6 +9,9 @@ import database.DatabaseConnectionException;
 import database.EmptySetException;
 import database.NoValueException;
 
+/**
+ * Classe che gestisce la connessione con un client
+ */
 public class ServerOneClient extends Thread {
     Socket socket;
     ObjectInputStream in;
@@ -32,24 +35,14 @@ public class ServerOneClient extends Thread {
      */
     public void run() {
         try {
-            boolean exit = true;
+            boolean next = true;
             KMeansMiner kmeans = null;
             Data data = null;
             String nameTable = null;
             int iterations = 0;
-            while(exit)
-            {
+            do {
                 int str = (Integer)in.readObject();
-                switch(str){
-                    case 3:
-                        String nameFile = (String)in.readObject();
-                        data = new Data(nameFile);
-                        nameFile += "_" + (Integer)in.readObject() + ".dat";
-                        out.writeObject("OK");
-                        kmeans = new KMeansMiner(nameFile);
-                        out.writeObject(kmeans.getC().toString(data));
-                        exit = false;
-                        break;
+                switch(str) {
                     case 0:
                         nameTable = (String)in.readObject();
                         data = new Data(nameTable);
@@ -66,12 +59,21 @@ public class ServerOneClient extends Thread {
                     case 2:
                         kmeans.salva(nameTable + "_" + iterations + ".dat");
                         out.writeObject("OK");
-                        exit = false;
+                        next = (Boolean)in.readObject();
+                        break;
+                    case 3:
+                        String nameFile = (String)in.readObject();
+                        data = new Data(nameFile);
+                        nameFile += "_" + (Integer)in.readObject() + ".dat";
+                        out.writeObject("OK");
+                        kmeans = new KMeansMiner(nameFile);
+                        out.writeObject(kmeans.getC().toString(data));
+                        next = (Boolean)in.readObject();
                         break;
                     default:
                         System.out.println("Qualcosa è andato storto :/");
                 }
-        }
+            } while (next);
         } catch (IOException e) {
             System.err.println(e.getMessage());
         } catch (ClassNotFoundException e) {

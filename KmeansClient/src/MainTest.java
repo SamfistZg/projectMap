@@ -14,11 +14,15 @@ import java.awt.BorderLayout;
 
 import keyboardinput.Keyboard;
 
+/**
+ * Classe principale del programma, che gestisce la connessione al server e l'interfaccia grafica.
+ */
 public class MainTest extends JFrame {
 
 	private ObjectOutputStream out;
 	private ObjectInputStream in ; // stream con richieste del client
 	private JPanel currentScene;
+	private boolean connected;
 	
 	/**
 	 * Costruttore di MainTest
@@ -30,9 +34,9 @@ public class MainTest extends JFrame {
 		super("Progetto MAP 2022/23");
 
 		InetAddress addr = InetAddress.getByName(ip); //ip
-		System.out.println("addr = " + addr);
 		Socket socket = new Socket(addr, port); //Port
-		System.out.println(socket);
+
+		connected = true;
 		
 		out = new ObjectOutputStream(socket.getOutputStream());
 		in = new ObjectInputStream(socket.getInputStream());
@@ -48,7 +52,11 @@ public class MainTest extends JFrame {
         setVisible(true);
 	}
 
-	public void setScene(JPanel scene) {
+	/**
+	 * Metodo che cambia la scena corrente, rimuovendola, con quella passata come paramentro.
+	 * @param scene scena che andrà a sostituire la scena corrente
+	 */
+	void setScene(JPanel scene) {
         if (currentScene != null) {
             remove(currentScene);
         }
@@ -58,6 +66,38 @@ public class MainTest extends JFrame {
         revalidate();
         repaint();
     }
+
+	/**
+	 * Metodo che rivela se il programma è connesso o meno.
+	 * @return
+	 */
+	boolean isConnected() {
+		return connected;
+	}
+
+	/**
+	 * 
+	 * @param choice
+	 */
+	void writeBoolean(boolean choice) {
+		try {
+			out.writeObject(choice);
+		} catch (IOException e) {
+			System.err.println(e.getMessage());
+		}
+	}
+
+	/**
+	 * 
+	 */
+	void closeConnection() {
+		try {
+			in.close();
+			out.close();
+		} catch (IOException e) {
+			System.err.println(e.getMessage());
+		}
+	}
 	
 	/**
 	 * Metodo che prende le informazioni da tastiera da parte dell'utente e restituisce l'oggetto sul file precompilato.
@@ -150,6 +190,9 @@ public class MainTest extends JFrame {
 
 }
 
+/**
+ * 
+ */
 class Scene1 extends JPanel {
     public Scene1(MainTest m) {
 		JPanel panel = new JPanel();
@@ -175,8 +218,27 @@ class Scene1 extends JPanel {
 		JButton button2 = new JButton("Esegui un nuovo risultato");
 		button2.setBounds(100, 200, 300, 40); 
 		panel.add(button2);
+		panel.add(Box.createVerticalStrut(10));
 
 		add(panel);
+		JPanel onlineStatus = new JPanel();
+		onlineStatus.setPreferredSize(new Dimension(20, 20));
+
+		JLabel connected = new JLabel();
+		connected.setFont(new Font("Arial", Font.BOLD, 20)); 
+		connected.setBounds(200, 50, 200, 40);
+
+		if (m.isConnected()) {
+			onlineStatus.setBackground(Color.GREEN);
+			connected.setText("Connesso");
+		} else {
+			onlineStatus.setBackground(Color.RED);
+			connected.setText("Non connesso");
+		}
+		
+		add(onlineStatus);
+
+		add(connected);
 
         button1.addActionListener(new ActionListener() {
 		@Override
@@ -198,6 +260,9 @@ class Scene1 extends JPanel {
     }
 }
 
+/**
+ * 
+ */
 class Scene2 extends JPanel {
     public Scene2(MainTest m) {
 		JPanel panel = new JPanel();
@@ -235,30 +300,36 @@ class Scene2 extends JPanel {
 					MainTest mainTest = (MainTest) SwingUtilities.getWindowAncestor(Scene2.this);
 					Scene4 scene4 = new Scene4(m, kmeans);
 					mainTest.setScene(scene4);
-				} catch (SocketException e1) {
-						System.out.println(e1);
-						return;
-					}
-					catch (FileNotFoundException e2) {
-						System.out.println(e2);
-						return ;
-					} catch (IOException e3) {
-						System.out.println(e3);
-						return;
-					} catch (ClassNotFoundException e4) {
-						System.out.println(e4);
-						return;
-					}
-					catch (ServerException e5) {
-						System.out.println(e5.getMessage());
-					}
+				} catch (SocketException ex) {
+					MainTest mainTest = (MainTest) SwingUtilities.getWindowAncestor(Scene2.this);
+					Scene7 scene7 = new Scene7(m, ex.getMessage() + ", riavvia il programma");
+					mainTest.setScene(scene7);
+				}
+				catch (FileNotFoundException ex) {
+					MainTest mainTest = (MainTest) SwingUtilities.getWindowAncestor(Scene2.this);
+					Scene7 scene7 = new Scene7(m, ex.getMessage() + ", riavvia il programma");
+					mainTest.setScene(scene7);
+				} catch (IOException ex) {
+					MainTest mainTest = (MainTest) SwingUtilities.getWindowAncestor(Scene2.this);
+					Scene7 scene7 = new Scene7(m, ex.getMessage() + ", riavvia il programma");
+					mainTest.setScene(scene7);
+				} catch (ClassNotFoundException ex) {
+					MainTest mainTest = (MainTest) SwingUtilities.getWindowAncestor(Scene2.this);
+					Scene7 scene7 = new Scene7(m, ex.getMessage() + ", riavvia il programma");
+					mainTest.setScene(scene7);
+				}
+				catch (ServerException ex) {
+					MainTest mainTest = (MainTest) SwingUtilities.getWindowAncestor(Scene2.this);
+					Scene7 scene7 = new Scene7(m, ex.getMessage() + ", riavvia il programma");
+					mainTest.setScene(scene7);
+				}
             }
         });	
 		confirmButton.setBounds(100, 120, 300, 40);
 		panel.add(Box.createVerticalStrut(10));
         panel.add(confirmButton);
 
-        JButton previousButton = new JButton("ANNULLA");
+        JButton previousButton = new JButton("Annulla");
         previousButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 MainTest mainTest = (MainTest) SwingUtilities.getWindowAncestor(Scene2.this);
@@ -283,8 +354,8 @@ class Scene3 extends JPanel {
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 
         JLabel label1 = new JLabel("Nome tabella: ");
-		label1.setFont(new Font("Arial", Font.BOLD, 20)); 
-		label1.setBounds(200, 50, 200, 40); 
+		label1.setFont(new Font("Arial", Font.BOLD, 20));
+		label1.setBounds(200, 50, 200, 40);
 		panel.add(Box.createVerticalStrut(10));
 		panel.add(label1);
 
@@ -308,61 +379,66 @@ class Scene3 extends JPanel {
         confirmButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 String nameTable = textArea1.getText();
-					while(true) 
-					{
+					while(true) {
 						try {
 							m.storeTableFromDb(nameTable);
 							break;
-						} catch (SocketException e1) {
-							System.out.println(e1.getMessage());
-							return;
-						} catch (FileNotFoundException e2) {
-							System.out.println(e2.getMessage());
-							return;
-						} catch (IOException e3) {
-							System.out.println(e3.getMessage());
-							return;
-						} catch (ClassNotFoundException e4) {
-							System.out.println(e4.getMessage());
-							return;
-						} catch (ServerException e5) {
-							System.out.println(e5.getMessage());
-						}
-					} 
-
-					char answer = 'n';
-					do {
-						try {
-							String nrCluster = textArea2.getText();
-							String clusterSet = m.learningFromDbTable(nrCluster);
-							m.storeClusterInFile();	
+						} catch (SocketException ex) {
 							MainTest mainTest = (MainTest) SwingUtilities.getWindowAncestor(Scene3.this);
-							Scene4 scene4 = new Scene4(m, clusterSet);
-							mainTest.setScene(scene4);
-						} catch (SocketException e1) {
-							System.out.println(e1.getMessage());
-							return;
-						} catch (FileNotFoundException e2) {
-							System.out.println(e2.getMessage());
-							return;
-						} catch (ClassNotFoundException e3) {
-							System.out.println(e3.getMessage());
-							return;
-						} catch (IOException e4) {
-							System.out.println(e4.getMessage());
-							return;
-						} catch (ServerException e5) {
-							System.out.println(e5.getMessage());
+							Scene7 scene7 = new Scene7(m, ex.getMessage() + ", riavvia il programma");
+							mainTest.setScene(scene7);
+						} catch (FileNotFoundException ex) {
+							MainTest mainTest = (MainTest) SwingUtilities.getWindowAncestor(Scene3.this);
+							Scene7 scene7 = new Scene7(m, ex.getMessage() + ", riavvia il programma");
+							mainTest.setScene(scene7);
+						} catch (IOException ex) {
+							MainTest mainTest = (MainTest) SwingUtilities.getWindowAncestor(Scene3.this);
+							Scene7 scene7 = new Scene7(m, ex.getMessage() + ", riavvia il programma");
+							mainTest.setScene(scene7);
+						} catch (ClassNotFoundException ex) {
+							MainTest mainTest = (MainTest) SwingUtilities.getWindowAncestor(Scene3.this);
+							Scene7 scene7 = new Scene7(m, ex.getMessage() + ", riavvia il programma");
+							mainTest.setScene(scene7);
+						} catch (ServerException ex) {
+							MainTest mainTest = (MainTest) SwingUtilities.getWindowAncestor(Scene3.this);
+							Scene7 scene7 = new Scene7(m, ex.getMessage() + ", riavvia il programma");
+							mainTest.setScene(scene7);
 						}
-						System.out.print("Vuoi ripetere l'esecuzione?(y/n)");
-						//answer = Keyboard.readChar();
-					} while(answer == 'y');
+					}
+					try {
+						String nrCluster = textArea2.getText();
+						String clusterSet = m.learningFromDbTable(nrCluster);
+						m.storeClusterInFile();	
+						MainTest mainTest = (MainTest) SwingUtilities.getWindowAncestor(Scene3.this);
+						Scene5 scene5 = new Scene5(m, clusterSet);
+						mainTest.setScene(scene5);
+					} catch (SocketException ex) {
+						MainTest mainTest = (MainTest) SwingUtilities.getWindowAncestor(Scene3.this);
+						Scene7 scene7 = new Scene7(m, ex.getMessage() + ", riavvia il programma");
+						mainTest.setScene(scene7);
+					} catch (FileNotFoundException ex) {
+						MainTest mainTest = (MainTest) SwingUtilities.getWindowAncestor(Scene3.this);
+						Scene7 scene7 = new Scene7(m, ex.getMessage() + ", riavvia il programma");
+						mainTest.setScene(scene7);
+					} catch (ClassNotFoundException ex) {
+						MainTest mainTest = (MainTest) SwingUtilities.getWindowAncestor(Scene3.this);
+						Scene7 scene7 = new Scene7(m, ex.getMessage() + ", riavvia il programma");
+						mainTest.setScene(scene7);
+					} catch (IOException ex) {
+						MainTest mainTest = (MainTest) SwingUtilities.getWindowAncestor(Scene3.this);
+						Scene7 scene7 = new Scene7(m, ex.getMessage() + ", riavvia il programma");
+						mainTest.setScene(scene7);
+					} catch (ServerException ex) {
+						MainTest mainTest = (MainTest) SwingUtilities.getWindowAncestor(Scene3.this);
+						Scene7 scene7 = new Scene7(m, ex.getMessage() + ", riavvia il programma");
+						mainTest.setScene(scene7);
+					}
             }
         });	
 		panel.add(Box.createVerticalStrut(10));
         panel.add(confirmButton);
 
-        JButton previousButton = new JButton("ANNULLA");
+        JButton previousButton = new JButton("Annulla");
         previousButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 MainTest mainTest = (MainTest) SwingUtilities.getWindowAncestor(Scene3.this);
@@ -377,12 +453,12 @@ class Scene3 extends JPanel {
 }
 
 /*
- * Scena che stampa il risultato di un kmeans caricato da file.
+ * Scena che stampa il contenuto di un file.
  */
 class Scene4 extends JPanel {
-    public Scene4(MainTest m, String kmeans) {
+    public Scene4(MainTest m, String read) {
 
-        JLabel label1 = new JLabel(kmeans);
+        JLabel label1 = new JLabel(read);
 		//label1.setBounds(200, 50, 200, 40); 
 		add(label1);
 
@@ -390,14 +466,117 @@ class Scene4 extends JPanel {
 		scrollPane.setPreferredSize(new Dimension(450, 400)); 
 		add(scrollPane);
 
-        JButton previousButton = new JButton("ANNULLA");
+        JButton previousButton = new JButton("Torna al menù principale");
         previousButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 MainTest mainTest = (MainTest) SwingUtilities.getWindowAncestor(Scene4.this);
+                Scene6 scene6 = new Scene6(m);
+                mainTest.setScene(scene6);
+            }
+        });
+        add(previousButton);
+    }
+}
+
+/*
+ * Scena che stampa il risultato della reinizializzazione.
+ */
+class Scene5 extends JPanel {
+    public Scene5(MainTest m, String result) {
+
+        JLabel label1 = new JLabel(result);
+		//label1.setBounds(200, 50, 200, 40); 
+		add(label1);
+
+		JScrollPane scrollPane = new JScrollPane(label1);
+		scrollPane.setPreferredSize(new Dimension(450, 400)); 
+		add(scrollPane);
+
+		JButton redoButton = new JButton("Riprova");
+        redoButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+				m.writeBoolean(true);
+                MainTest mainTest = (MainTest) SwingUtilities.getWindowAncestor(Scene5.this);
+                Scene3 scene3 = new Scene3(m);
+                mainTest.setScene(scene3);
+            }
+        });
+        add(redoButton);
+
+        JButton previousButton = new JButton("Torna al menù principale");
+        previousButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                MainTest mainTest = (MainTest) SwingUtilities.getWindowAncestor(Scene5.this);
+                Scene6 scene6 = new Scene6(m);
+                mainTest.setScene(scene6);
+            }
+        });
+        add(previousButton);
+    }
+}
+
+/*
+ * Scena che fa decidere all'utente se continuare ad utilizzare il programma o meno.
+ */
+class Scene6 extends JPanel {
+    public Scene6(MainTest m) {
+
+        JLabel label1 = new JLabel("Vuoi continuare?");
+		//label1.setBounds(200, 50, 200, 40); 
+		add(label1);
+
+		JScrollPane scrollPane = new JScrollPane(label1);
+		scrollPane.setPreferredSize(new Dimension(450, 400)); 
+		add(scrollPane);
+
+        JButton yesButton = new JButton("Sì");
+        yesButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+				m.writeBoolean(true);
+                MainTest mainTest = (MainTest) SwingUtilities.getWindowAncestor(Scene6.this);
                 Scene1 scene1 = new Scene1(m);
                 mainTest.setScene(scene1);
             }
         });
-        add(previousButton);
+        add(yesButton);
+
+		JButton noButton = new JButton("No");
+        noButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+				m.writeBoolean(false);
+				MainTest mainTest = (MainTest) SwingUtilities.getWindowAncestor(Scene6.this);
+				Scene7 scene7 = new Scene7(m, "Connessione interrotta, grazie per l'utilizzo");
+				mainTest.setScene(scene7);
+            }
+        });
+        add(noButton);
+    }
+}
+
+/**
+ * Scena di chiusura che stampa un errore o ringrazia e saluta l'utente.
+ */
+class Scene7 extends JPanel {
+    public Scene7(MainTest m, String read) {
+		JPanel panel = new JPanel();
+        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+		panel.add(Box.createVerticalStrut(100));
+
+        JLabel label1 = new JLabel(read);
+		label1.setBounds(200, 50, 200, 40);
+		panel.add(label1);
+		
+		panel.add(Box.createVerticalStrut(10));
+
+        JButton previousButton = new JButton("Chiudi");
+        previousButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                m.closeConnection();
+                System.exit(0);
+            }
+        });
+        panel.add(previousButton);
+
+		add(panel);
     }
 }
