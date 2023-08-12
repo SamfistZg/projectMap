@@ -10,7 +10,7 @@ import database.EmptySetException;
 import database.NoValueException;
 
 /**
- * Classe che gestisce la connessione con un client
+ * Classe che gestisce la connessione con un client.
  */
 public class ServerOneClient extends Thread {
     Socket socket;
@@ -20,7 +20,7 @@ public class ServerOneClient extends Thread {
 
     /**
      * Costruttore di ServerOneClient.
-     * @param s
+     * @param s     socket a cui ci si vuole connettere
      * @throws IOException
      */
     public ServerOneClient(Socket s) throws IOException {

@@ -7,15 +7,26 @@ import java.util.List; //P
 import java.util.TreeSet; //P
 import database.TableSchema.Column; //P
 
+/**
+ * Classe che rappresenta la tabella dati acquisita dalla connessione al db.
+ */
 public class TableData {
 	DbAccess db;
 
+	/**
+	 * Costruttore di TableData.
+	 * @param db 	DbAccess
+	 */
 	public TableData(DbAccess db) {
 		this.db = db;
 	}
 
 	/**
-	 * Ricava lo schema di "table", va a estrarre tutti i dati contenuti in table e va a inserire in una lista di example solo le tuple distinte.
+	 * Funzione che ricava lo schema di table, va a estrarre tutti i dati contenuti in table 
+	 * e va a inserire in una lista di example solo le tuple distinte.
+	 * @param table 	nome della tabella
+	 * @throws SQLException
+	 * @throws EmptySetException
 	 */
 	public List<Example> getDistinctTransazioni(String table) throws SQLException, EmptySetException {
 		TableSchema schema = new TableSchema(db, table);
@@ -42,7 +53,10 @@ public class TableData {
 	}
 
 	/**
-	 * Restituisce un Set di valori distinti di una specifica colonna.
+	 * Funzione che restituisce un Set di valori distinti di una specifica colonna.
+	 * @param table 	nome della tabella
+	 * @param column 	colonna di cui si vuole ottenre un set di valori distinti
+	 * @throws SQLException 	
 	 */
 	public TreeSet<String> getDistinctColumnValues(String table, Column column) throws SQLException {
 		Statement stmt = db.getConnection().createStatement();
@@ -59,7 +73,12 @@ public class TableData {
 	}
 
 	/**
-	 * Restituisce il risultato della query_type applicato alla colonna column della tabella table.
+	 * Funzione che restituisce il risultato della query_type applicato alla colonna column della tabella table.
+	 * @param table 	nome della tabella
+	 * @param column 	colonna a cui si vuole applicare la query(aggregate)
+	 * @param aggregate 	QUERY_TYPE
+	 * @throws SQLException
+	 * @throws NoValueException
 	 */
 	public Object getAggregateColumnValue(String table, Column column, QUERY_TYPE aggregate) throws SQLException, NoValueException {
 		Statement stmt = db.getConnection().createStatement();

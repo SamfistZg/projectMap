@@ -3,6 +3,9 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
+/**
+ * Classe che rappresenta tutte le informazioni relative al db a cui ci si vuole connettere.
+ */
 public class DbAccess {
     private static final String DRIVER_CLASS_NAME = "com.mysql.cj.jdbc.Driver";
     private final String DBMS = "jdbc:mysql";
@@ -13,6 +16,10 @@ public class DbAccess {
     private final String PASSWORD = "map";
     private Connection conn;
 
+    /**
+     * Metodo che inizializza la connessione al db.
+     * @throws DatabaseConnectionException
+     */
     public void initConnection( ) throws DatabaseConnectionException {
         try {
             Class.forName(DRIVER_CLASS_NAME);
@@ -27,9 +34,17 @@ public class DbAccess {
         }
     }
 
+    /**
+     * Funzione che restituisce la Connection
+     * @return conn     Connection
+     */
     public Connection getConnection() {
         return conn;
     }
+
+    /**
+     * Metodo che chiude la connessione al db.
+     */
     public void closeConnection() {
         try {
             conn.close();
@@ -40,3 +55,4 @@ public class DbAccess {
         }
     }
 }
+

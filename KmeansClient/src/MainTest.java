@@ -25,7 +25,7 @@ public class MainTest extends JFrame {
 	private boolean connected;
 	
 	/**
-	 * Costruttore di MainTest
+	 * Costruttore di MainTest.
 	 * @param ip
 	 * @param port
 	 * @throws IOException
@@ -40,12 +40,12 @@ public class MainTest extends JFrame {
 		
 		out = new ObjectOutputStream(socket.getOutputStream());
 		in = new ObjectInputStream(socket.getInputStream());
+
 		setTitle("Progetto MAP 2022/23");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(500, 500);
 		setResizable(false);
 
-        // Crea la prima scena
         Scene1 scene1 = new Scene1(this);
         setScene(scene1);
 
@@ -53,8 +53,8 @@ public class MainTest extends JFrame {
 	}
 
 	/**
-	 * Metodo che cambia la scena corrente, rimuovendola, con quella passata come paramentro.
-	 * @param scene scena che andrà a sostituire la scena corrente
+	 * Metodo che cambia la scena corrente con quella passata come paramentro.
+	 * @param scene scena che andrà a sostituire la scena corrente.
 	 */
 	void setScene(JPanel scene) {
         if (currentScene != null) {
@@ -69,14 +69,14 @@ public class MainTest extends JFrame {
 
 	/**
 	 * Metodo che rivela se il programma è connesso o meno.
-	 * @return
+	 * @return bool
 	 */
 	boolean isConnected() {
 		return connected;
 	}
 
 	/**
-	 * 
+	 * Metodo che scrive in un flusso (out) un boolean passato come parametro.
 	 * @param choice
 	 */
 	void writeBoolean(boolean choice) {
@@ -88,7 +88,7 @@ public class MainTest extends JFrame {
 	}
 
 	/**
-	 * 
+	 * Metodo che chiude i due flussi (in e out).
 	 */
 	void closeConnection() {
 		try {
@@ -101,7 +101,7 @@ public class MainTest extends JFrame {
 	
 	/**
 	 * Metodo che prende le informazioni da tastiera da parte dell'utente e restituisce l'oggetto sul file precompilato.
-	 * @return
+	 * @return stringa letta da file, risultato del kmeans
 	 * @throws SocketException
 	 * @throws ServerException
 	 * @throws IOException
@@ -137,7 +137,7 @@ public class MainTest extends JFrame {
 
 	/**
 	 * Metodo che legge da server socket e stampa i cluster.
-	 * @return
+	 * @return stringa, i cluster prodotti
 	 * @throws SocketException
 	 * @throws ServerException
 	 * @throws IOException
@@ -157,7 +157,7 @@ public class MainTest extends JFrame {
 	}
 	
 	/**
-	 * Metodo che salva i cluster 
+	 * Metodo che salva i cluster su file.
 	 */
 	void storeClusterInFile() throws SocketException, ServerException, IOException, ClassNotFoundException{
 		out.writeObject(2);
@@ -191,9 +191,13 @@ public class MainTest extends JFrame {
 }
 
 /**
- * 
+ * Classe che rappresenta la scena1 cioè la schermata principale.
  */
 class Scene1 extends JPanel {
+	/**
+	 * Costruttore di Scene1.
+	 * @param m
+	 */
     public Scene1(MainTest m) {
 		JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
@@ -221,6 +225,7 @@ class Scene1 extends JPanel {
 		panel.add(Box.createVerticalStrut(10));
 
 		add(panel);
+
 		JPanel onlineStatus = new JPanel();
 		onlineStatus.setPreferredSize(new Dimension(20, 20));
 
@@ -237,7 +242,6 @@ class Scene1 extends JPanel {
 		}
 		
 		add(onlineStatus);
-
 		add(connected);
 
         button1.addActionListener(new ActionListener() {
@@ -261,9 +265,13 @@ class Scene1 extends JPanel {
 }
 
 /**
- * 
+ * Classe che rappresenta la scena2 cioè la scena per recuperare un kmeans precedentemente salvato.
  */
 class Scene2 extends JPanel {
+	/**
+	 * Costruttore di Scene2.
+	 * @param m
+	 */
     public Scene2(MainTest m) {
 		JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
@@ -295,7 +303,7 @@ class Scene2 extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 String nameTable = textArea1.getText();
 		        String nrIterate = textArea2.getText();     
-				try{
+				try {
 					String kmeans = m.learningFromFile(nameTable, nrIterate);
 					MainTest mainTest = (MainTest) SwingUtilities.getWindowAncestor(Scene2.this);
 					Scene4 scene4 = new Scene4(m, kmeans);
@@ -346,9 +354,13 @@ class Scene2 extends JPanel {
 }
 
 /*
- * Scena in cui si elabora un nuovo risultato.
+ * Classe che rappresenta la scena3 cioè la scena in cui si vuole produrre un nuovo risultato.
  */
 class Scene3 extends JPanel {
+	/**
+	 * Costruttore di Scene3.
+	 * @param m
+	 */
     public Scene3(MainTest m) {
 		JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
@@ -453,9 +465,14 @@ class Scene3 extends JPanel {
 }
 
 /*
- * Scena che stampa il contenuto di un file.
+ * Classe che rappresenta la scena4 cioè la scena in cui viene stampato il contenuto di un file.
  */
 class Scene4 extends JPanel {
+	/**
+	 * Costruttore di Scene4.
+	 * @param m
+	 * @param read
+	 */
     public Scene4(MainTest m, String read) {
 
         JLabel label1 = new JLabel(read);
@@ -479,9 +496,14 @@ class Scene4 extends JPanel {
 }
 
 /*
- * Scena che stampa il risultato della reinizializzazione.
+ * Classe che rappresenta la scena5 cioè la scena in cui viene stampato un nuovo risultato(kmeans).
  */
 class Scene5 extends JPanel {
+	/**
+	 * Costruttore di Scene5.
+	 * @param m
+	 * @param result
+	 */
     public Scene5(MainTest m, String result) {
 
         JLabel label1 = new JLabel(result);
@@ -516,7 +538,7 @@ class Scene5 extends JPanel {
 }
 
 /*
- * Scena che fa decidere all'utente se continuare ad utilizzare il programma o meno.
+ * Classe che rappresenta la scena6 cioè la scena in cui si chiede all'utente se continuare ad utilizzare il programma o meno.
  */
 class Scene6 extends JPanel {
     public Scene6(MainTest m) {
@@ -554,7 +576,7 @@ class Scene6 extends JPanel {
 }
 
 /**
- * Scena di chiusura che stampa un errore o ringrazia e saluta l'utente.
+ * Classe che rappresenta la scena7 in cui si stampa un errore o si ringrazia l'utente per l'uso.
  */
 class Scene7 extends JPanel {
     public Scene7(MainTest m, String read) {

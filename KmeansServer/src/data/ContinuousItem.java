@@ -1,12 +1,23 @@
 package data;
 
+/**
+ * Classe che rappresenta un ContinuousItem, estende Item
+ */
 public class ContinuousItem extends Item {
+
+    /**
+     * Cotruttore di ContinuousItem.
+     * @param attribute ContinuousAttribute
+     * @param value valore che si vuole dare al ContinuousAttrubute
+     */
     ContinuousItem(ContinuousAttribute attribute, double value) {
         super(attribute, value);
     }
 
-    /*
-     * Calcola la distanza tra due oggetti di tipo ContinuousItem (implementa il metodo distance della superclasse)
+    /**
+     * Funzione calcola la distanza tra due oggetti di tipo ContinuousItem (implementa il metodo distance della superclasse).
+     * @param a     oggetto da cui si vuiole calcolare la distanza
+     * @return double   distanza 
      */
     @Override
     double distance(Object a) {

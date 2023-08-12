@@ -4,7 +4,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 /**
- * Classe che rappresenta un server in grado di ascoltare richieste da diversi client
+ * Classe principale, rappresenta un server in grado di ascoltare richieste da diversi client.
  */
 public class MultiServer {
     private static final int DEFAULT_PORT = 8080;
@@ -14,7 +14,7 @@ public class MultiServer {
 
     /**
      * Costruttore di MultiServer.
-     * @param port
+     * @param port  numero di port
      * @throws IOException
      */
      public MultiServer(int port) throws IOException {
@@ -31,18 +31,17 @@ public class MultiServer {
         InetAddress newAddress = InetAddress.getByName(ip);
         ServerSocket sS = new ServerSocket(port, 50, newAddress);
         try {
-
             while(true) {
                 Socket s = sS.accept();
-            try {
-                ServerOneClient sOneC = new ServerOneClient(s);
+                try {
+                    ServerOneClient sOneC = new ServerOneClient(s);
+                } finally {
+                    s.close();
+                    }
+                }
             } finally {
-                s.close();
-            }
-        }
-        } finally {
             sS.close();
-        }
+            }
     } 
 
     public static void main(String [] args) {

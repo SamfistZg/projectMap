@@ -8,14 +8,28 @@ import java.io.ObjectOutputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
+/**
+ * Classe che rappresenta il ClusterSet.
+ */
 public class KMeansMiner {
 
     private ClusterSet C;
 
+    /**
+     * Costruttore di KMeansMiner.
+     * @param k
+     */
     public KMeansMiner(int k) {
         C = new ClusterSet(k);
     }
     
+    /**
+     * Costruttore di KMeansMiner che legge il ClusterSet da un file passando il suo nome come input.
+     * @param fileName  nome del file
+     * @throws FileNotFoundException
+     * @throws IOException
+     * @throws ClassNotFoundException
+     */
     public KMeansMiner(String fileName) throws FileNotFoundException, IOException, ClassNotFoundException {
         FileInputStream inFile = new FileInputStream(fileName);
         ObjectInputStream inStream = new ObjectInputStream(inFile);
@@ -23,6 +37,12 @@ public class KMeansMiner {
         inStream.close();
     }
     
+    /**
+     * Metodo che salva il ClusterSet su un file, il cui nome è passato in input.
+     * @param fileName  nome del file
+     * @throws FileNotFoundException
+     * @throws IOException
+     */
     public void salva(String fileName) throws FileNotFoundException, IOException {
         FileOutputStream outFile = new FileOutputStream(fileName);
         ObjectOutputStream outStream = new ObjectOutputStream(outFile);
@@ -30,10 +50,20 @@ public class KMeansMiner {
         outStream.close();
     }
 
+    /**
+     * Restituisce il ClusterSet.
+     * @return ClusterSet   
+     */
     public ClusterSet getC() {
         return C;
     }
 
+    /**
+     * Funzione che, passato un dataset in input, restituisce il numero di iterazioni che sono servite per eseguire il kmeans.
+     * @param data  dataset
+     * @return numberOfIterations   numero di iterazioni che sono servite per ottenere i cluster desiderati.
+     * @throws OutOfRangeSampleSize
+     */
     public int kmeans(Data data) throws OutOfRangeSampleSize {
 
         int numberOfIterations = 0;
