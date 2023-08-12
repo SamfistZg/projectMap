@@ -77,7 +77,7 @@ public class MainTest extends JFrame {
 
 	/**
 	 * Metodo che scrive in un flusso (out) un boolean passato come parametro.
-	 * @param choice
+	 * @param choice 	valore boolean che si vuole scrivere sul flusso out
 	 */
 	void writeBoolean(boolean choice) {
 		try {
@@ -103,7 +103,7 @@ public class MainTest extends JFrame {
 	 * Metodo che prende le informazioni da tastiera da parte dell'utente e restituisce l'oggetto sul file precompilato.
 	 * @return stringa letta da file, risultato del kmeans
 	 * @throws SocketException
-	 * @throws ServerException
+	 * @throws ServerException 	eccezione personalizzata che viene lanciata in cui si riscontra un errore con il Server
 	 * @throws IOException
 	 * @throws ClassNotFoundException
 	 */
@@ -121,8 +121,8 @@ public class MainTest extends JFrame {
 
 	/**
 	 * Metodo che chiede da tastiera all'utente il nome della tabella e lo restituisce al server socket.
-	 * @throws SocketException
-	 * @throws ServerException
+	 * @throws SocketException	
+	 * @throws ServerException 	eccezione personalizzata che viene lanciata in cui si riscontra un errore con il Server
 	 * @throws IOException
 	 * @throws ClassNotFoundException
 	 */
@@ -139,7 +139,7 @@ public class MainTest extends JFrame {
 	 * Metodo che legge da server socket e stampa i cluster.
 	 * @return stringa, i cluster prodotti
 	 * @throws SocketException
-	 * @throws ServerException
+	 * @throws ServerException 	eccezione personalizzata che viene lanciata in cui si riscontra un errore con il Server
 	 * @throws IOException
 	 * @throws ClassNotFoundException
 	 */
@@ -157,7 +157,11 @@ public class MainTest extends JFrame {
 	}
 	
 	/**
-	 * Metodo che salva i cluster su file.
+	 * Metodo che salva i cluster su file
+	 * @throws SocketException
+	 * @throws ServerException 	eccezione personalizzata che viene lanciata in cui si riscontra un errore con il Server
+	 * @throws IOException
+	 * @throws ClassNotFoundException
 	 */
 	void storeClusterInFile() throws SocketException, ServerException, IOException, ClassNotFoundException{
 		out.writeObject(2);
@@ -196,7 +200,7 @@ public class MainTest extends JFrame {
 class Scene1 extends JPanel {
 	/**
 	 * Costruttore di Scene1.
-	 * @param m
+	 * @param m 	MainTest
 	 */
     public Scene1(MainTest m) {
 		JPanel panel = new JPanel();
@@ -270,7 +274,7 @@ class Scene1 extends JPanel {
 class Scene2 extends JPanel {
 	/**
 	 * Costruttore di Scene2.
-	 * @param m
+	 * @param m 	MainTest
 	 */
     public Scene2(MainTest m) {
 		JPanel panel = new JPanel();
@@ -359,7 +363,7 @@ class Scene2 extends JPanel {
 class Scene3 extends JPanel {
 	/**
 	 * Costruttore di Scene3.
-	 * @param m
+	 * @param m 	MainTest
 	 */
     public Scene3(MainTest m) {
 		JPanel panel = new JPanel();
@@ -470,8 +474,8 @@ class Scene3 extends JPanel {
 class Scene4 extends JPanel {
 	/**
 	 * Costruttore di Scene4.
-	 * @param m
-	 * @param read
+	 * @param m 	MainTest
+	 * @param read 	stringa contenente il kmeans
 	 */
     public Scene4(MainTest m, String read) {
 
@@ -501,8 +505,8 @@ class Scene4 extends JPanel {
 class Scene5 extends JPanel {
 	/**
 	 * Costruttore di Scene5.
-	 * @param m
-	 * @param result
+	 * @param m 	MainTest
+	 * @param result 	stringa contenente il ClusterSet
 	 */
     public Scene5(MainTest m, String result) {
 
@@ -541,6 +545,10 @@ class Scene5 extends JPanel {
  * Classe che rappresenta la scena6 cioè la scena in cui si chiede all'utente se continuare ad utilizzare il programma o meno.
  */
 class Scene6 extends JPanel {
+	/**
+	 * Costruttore di Scene6.
+	 * @param m 	MainTest
+	 */
     public Scene6(MainTest m) {
 
         JLabel label1 = new JLabel("Vuoi continuare?");
@@ -579,6 +587,11 @@ class Scene6 extends JPanel {
  * Classe che rappresenta la scena7 in cui si stampa un errore o si ringrazia l'utente per l'uso.
  */
 class Scene7 extends JPanel {
+	/**
+	 * Costruttore di Scene7.
+	 * @param m 	MainTest
+	 * @param read 	stringa contenente il messaggio da stampare
+	 */
     public Scene7(MainTest m, String read) {
 		JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
