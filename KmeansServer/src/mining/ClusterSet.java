@@ -31,7 +31,7 @@ public class ClusterSet implements Serializable {
     /**
      * Funzione che restituisce un Cluster ad una specifica posizione passata in input.
      * @param i     indice del Cluster che si vuole ricevere in output
-     * @return Cluster  Cluster in posizione i 
+     * @return C[i]  Cluster in posizione i 
      */
     public Cluster get(int i) {
         return C[i];
@@ -40,7 +40,7 @@ public class ClusterSet implements Serializable {
     /**
      * Inserisce gli indici dei centroidi dentro l'array centroidIndexes e crea i cluster in base a quelli.
      * @param data  dataset
-     * @throws OutOfRangeSampleSize
+     * @throws OutOfRangeSampleSize     eccezione sollevata nel caso in cui si inserisce un numero di cluster superiore al numero di Examples
      */
     public void inizializeCentroids(Data data) throws OutOfRangeSampleSize {
         int[] centroidIndexes = data.sampling(C.length);
@@ -52,8 +52,8 @@ public class ClusterSet implements Serializable {
 
    /**
     * Funzione che restiuisce il cluster più vicino alla tupla passata in input.
-    * @param tuple  tupla 
-    * @return Cluster   Cluster più vicino a tuple passata in input
+    * @param tuple  tupla di riferimento
+    * @return nearest   Cluster più vicino a tuple passata in input
     */
     public Cluster nearestCluster(Tuple tuple) {
 
@@ -67,8 +67,8 @@ public class ClusterSet implements Serializable {
 
    /**
     * Funzione che restituisce il cluster dove è presenta la tupla id passata in input.
-    * @param id     indice dove è presente la tupla che si vuole ricevere in output (Cluster)
-    * @return Cluster Cluster in posizione id
+    * @param id     indice dove è presente il Cluster che si vuole ricevere in output
+    * @return C[i] Cluster in posizione id
     */
     public Cluster currentCluster(int id) {
 
@@ -92,7 +92,7 @@ public class ClusterSet implements Serializable {
 
     /**
      * Funzione che stampa i cluster, è un override.
-     * @return String   stringa contenente i valori di un Cluster
+     * @return str   stringa contenente i valori di un Cluster
      */
     public String toString() {
 
@@ -109,7 +109,7 @@ public class ClusterSet implements Serializable {
     /**
      * Funzione che stampa i cluster grazie al Data ricevuto in input.
      * @param data  dataset
-     * @return String   stringa contenente i valori di un Cluster 
+     * @return str   stringa contenente i valori di un Cluster 
      */
     public String toString(Data data) {
 

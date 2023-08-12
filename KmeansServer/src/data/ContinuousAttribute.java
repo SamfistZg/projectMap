@@ -23,7 +23,7 @@ class ContinuousAttribute extends Attribute {
 
     /**
      * Funzione che restituisce il valore massimo del ContinuousAttribute.
-     * @return double   valore massimo 
+     * @return max   valore massimo 
      */
     public double getMax() {
         return max;
@@ -40,7 +40,7 @@ class ContinuousAttribute extends Attribute {
     /**
      * Funzione che restituisce il valore v, passato in input, scalato.
      * @param v         valore che si intende scalare
-     * @return double   valore scalato
+     * @return vScld   valore scalato
      */
     public double getScaledValue(double v) {
         double vScld = (v-min)/(max-min);

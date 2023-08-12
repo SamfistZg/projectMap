@@ -17,7 +17,7 @@ class DiscreteItem extends Item {
     /**
      * Funzione che restituisce la distanza tra un DiscreteItem e un oggetto a.
      * @param a     oggetto da cui calcolare la distanza
-     * @return double   distanza
+     * @return 0 o 1   distanza
      */
     @Override
     public double distance(Object a) {

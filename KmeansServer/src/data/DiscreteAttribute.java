@@ -15,7 +15,7 @@ class DiscreteAttribute extends Attribute implements Iterable<String> {
      * Costruttore di DiscreteAttribute.
      * @param name  nome del Attribute
      * @param index     indice del Attribute
-     * @param v TreeSet<String>
+     * @param v TreeSet<String> da cui si prenderanno tutti i valori da inserire in values
      */
     DiscreteAttribute(String name, int index, TreeSet<String> v) {
 
@@ -39,7 +39,7 @@ class DiscreteAttribute extends Attribute implements Iterable<String> {
 
     /**
      * Iteratore per scorrere una collection.
-     * @return Iterator
+     * @return Iterator     iteratore per scorrere il TreeSet
      */
     public Iterator<String> iterator() {
         Iterator<String> iterator = values.iterator();
@@ -51,7 +51,7 @@ class DiscreteAttribute extends Attribute implements Iterable<String> {
      * @param data  dataset
      * @param idList    Set<Integer>
      * @param v     stringa che rappresenta l'attributo di cui si vuole sapere la frequenza.
-     * @return int  frequenza
+     * @return count  frequenza
      */
     public int frequency(Data data, Set<Integer> idList, String v) {
 

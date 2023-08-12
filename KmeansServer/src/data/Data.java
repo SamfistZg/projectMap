@@ -31,9 +31,9 @@ public class Data {
 	 * Costruttore di Data.
 	 * @param table 	nome della tabella
 	 * @throws SQLException
-	 * @throws EmptySetException
-	 * @throws NoValueException
-	 * @throws DatabaseConnectionException
+	 * @throws EmptySetException 	eccezione personalizzata che viene sollevata quando il ResultSet è vuoto
+	 * @throws NoValueException 	eccezione personalizzata che viene sollevata quando si trova un valore null nel ResultSet
+	 * @throws DatabaseConnectionException 	eccezione personalizzata che viene sollevata se la connessione al db non va a buon fine
 	 */
 	public Data(String table) throws SQLException, EmptySetException, NoValueException, DatabaseConnectionException {
 		db.initConnection();
@@ -60,7 +60,7 @@ public class Data {
 
 	/**
 	 * Funzione che restituisce il numero di righe(Examples) del dataset.
-	 * @return int 	numero di righe del dataset.
+	 * @return numberOfExamples 	numero di righe del dataset.
 	 */
 	public int getNumberOfExamples() {
 		return numberOfExamples;
@@ -140,7 +140,7 @@ public class Data {
 	 * Funzione che restituisce un vettore di centroidi di dimensione k passata in input.
 	 * @param k 	dimensione del vettore di centroidi
 	 * @return int[] 	vettore di interi
-	 * @throws OutOfRangeSampleSize
+	 * @throws OutOfRangeSampleSize 	eccezione personalizzata che viene sollevata quando si inserisce un numero di cluster superiore al numberOfExamples o minore di 0
 	 */
 	public int [] sampling(int k) throws OutOfRangeSampleSize{
 		if (k <= 0 || k > numberOfExamples) {
@@ -173,7 +173,7 @@ public class Data {
 	 * Funzione che confronta due righe e resituisce true se uguali, false se diverse.
 	 * @param i 	indice prima riga
 	 * @param k 	indice seconda riga
-	 * @return boolean 	true se uguali, false altrimenti
+	 * @return res 	true se uguali, false altrimenti
 	 */
 	private boolean compare(int i, int k) {
 
@@ -207,7 +207,7 @@ public class Data {
 	 * Funzoone che restituisce il valore (String) che si ripete più volte utilizzando un vettore freq e la funzione frequency.
 	 * @param idList 	Set di Integer
 	 * @param attribute 	attributo in base al quale si vuole calcolare il valore più frequente
-	 * @return String 	valore più frequente
+	 * @return att[maxIndex] 	valore più frequente
 	 */
 	public String computePrototype(Set<Integer> idList, DiscreteAttribute attribute) {
 		

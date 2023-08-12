@@ -1,6 +1,13 @@
 package data;
 
+/**
+ * Classe che rappresenta un'eccezione personalizzata, chiaramente estende Exception.
+ */
 public class OutOfRangeSampleSize extends Exception {
+    /**
+     * Costruttore di OutOfRangeSampleSize.
+     * @param message   stringa contenente il messaggio da stampare nel caso venga sollevata.
+     */
     OutOfRangeSampleSize(String message) {
         super(message);
     }

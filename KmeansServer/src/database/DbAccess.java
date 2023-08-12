@@ -18,7 +18,7 @@ public class DbAccess {
 
     /**
      * Metodo che inizializza la connessione al db.
-     * @throws DatabaseConnectionException
+     * @throws DatabaseConnectionException  eccezione personalizzata che viene lanciata quando la connessione al db non va a buon fine
      */
     public void initConnection( ) throws DatabaseConnectionException {
         try {

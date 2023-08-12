@@ -22,7 +22,7 @@ public abstract class Item implements Serializable {
 
     /**
      * Funzione che restiuisce l'Attribute di un Item.
-     * @return Attribute    attribute del Item
+     * @return attribute    attributo del Item
      */
     public Attribute getAttribute() {
         return attribute;
@@ -30,7 +30,7 @@ public abstract class Item implements Serializable {
 
     /**
      * Funzione che restiuisce il value di un Item.
-     * @return Object   value del Item
+     * @return value   value del Item
      */
     public Object getValue() {
         return value;

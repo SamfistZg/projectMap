@@ -39,8 +39,8 @@ public class TableSchema {
 		}
 
 		/**
-		 * Funzione che restituisce true se il tipo è number, false altrimenti.
-		 * @return boolean 	true o false
+		 * Funzione che restituisce true se il tipo è un number, false altrimenti.
+		 * @return true o false
 		 */
 		public boolean isNumber() {
 			return type.equals("number");

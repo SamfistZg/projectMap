@@ -43,6 +43,7 @@ public class Example implements Comparable<Example> {
 
 	/**
 	 * Funzione che stampa tutti gli Object presenti in Example.
+	 * @return str 	stringa contenente gli oggetti di Example
 	 */
 	public String toString() {
 		String str = "";

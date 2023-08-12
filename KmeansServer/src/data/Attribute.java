@@ -21,7 +21,7 @@ abstract class Attribute implements Serializable {
 
     /**
      * Funzione che restituisce il nome del Attribute.
-     * @return String   nome da restituire
+     * @return name   nome da restituire
      */
     public String getName() {
         return name;
@@ -29,7 +29,7 @@ abstract class Attribute implements Serializable {
 
     /**
      * Funzione che restituisce l'indice del attributo.
-     * @return int  indice del attributo
+     * @return index  indice del attributo
      */
     public int getIndex () {
         return index;
@@ -37,7 +37,7 @@ abstract class Attribute implements Serializable {
 
     /**
      * Funzione che stampa l'attributo, è un override.
-     * @return String   nome del attributo
+     * @return name   nome del attributo
      */
     public String toString() {
         return name;

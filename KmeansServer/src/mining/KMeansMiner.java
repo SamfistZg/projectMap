@@ -17,7 +17,7 @@ public class KMeansMiner {
 
     /**
      * Costruttore di KMeansMiner.
-     * @param k
+     * @param k     dimensione del ClusterSet
      */
     public KMeansMiner(int k) {
         C = new ClusterSet(k);
@@ -52,7 +52,7 @@ public class KMeansMiner {
 
     /**
      * Restituisce il ClusterSet.
-     * @return ClusterSet   
+     * @return C    ClusterSet   
      */
     public ClusterSet getC() {
         return C;
@@ -62,7 +62,7 @@ public class KMeansMiner {
      * Funzione che, passato un dataset in input, restituisce il numero di iterazioni che sono servite per eseguire il kmeans.
      * @param data  dataset
      * @return numberOfIterations   numero di iterazioni che sono servite per ottenere i cluster desiderati.
-     * @throws OutOfRangeSampleSize
+     * @throws OutOfRangeSampleSize     eccezione sollevata nel caso in cui si inserisce un numero di cluster superiore al numero di Examples
      */
     public int kmeans(Data data) throws OutOfRangeSampleSize {
 

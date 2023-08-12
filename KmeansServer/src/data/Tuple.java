@@ -10,7 +10,7 @@ public class Tuple implements Serializable {
 
     /**
      * Costruttore di Tuple
-     * @param size  dimensione dell'array di Item
+     * @param size  dimensione dell'array di Item 
      */
     Tuple(int size) {
         tuple = new Item[size];
@@ -27,7 +27,7 @@ public class Tuple implements Serializable {
     /**
      * Funzione che restituisce l'Item in posizione i.
      * @param i     indice del array
-     * @return Item
+     * @return tuple[i]         item in posizione i 
      */
     public Item get(int i) {
         return tuple[i];
@@ -43,9 +43,9 @@ public class Tuple implements Serializable {
     }
 
     /**
-     * Funzione che restituisce la distanza di una tupla da un 'altra.'
+     * Funzione che restituisce la distanza di una tupla da un'altra
      * @param obj   tupla da cui si vuole calcolare la distanza
-     * @return double   distanza 
+     * @return distance   distanza 
      */
     public double getDistance(Tuple obj) { 
 
@@ -61,7 +61,7 @@ public class Tuple implements Serializable {
      * Funzione che restituisce la media delle distanze tra i valori di data e quelli di clusteredData.
      * @param data  dataset
      * @param clusteredData array di int contenente i valori clusterizzati.
-     * @return double   media
+     * @return p   media
      */
     public double avgDistance(Data data, int clusteredData[]) {
         double p = 0.0 , sumD = 0.0;

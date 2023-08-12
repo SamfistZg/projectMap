@@ -26,15 +26,15 @@ public class TableData {
 	 * e va a inserire in una lista di example solo le tuple distinte.
 	 * @param table 	nome della tabella
 	 * @throws SQLException
-	 * @throws EmptySetException
+	 * @throws EmptySetException 	eccezione che viene sollevata nel caso in cui ResultSet sia vuoto
 	 */
 	public List<Example> getDistinctTransazioni(String table) throws SQLException, EmptySetException {
 		TableSchema schema = new TableSchema(db, table);
 		List<Example> distinctTransazioni = new ArrayList<Example>();
 		Statement stmt = db.getConnection().createStatement();
 		ResultSet resultSet = stmt.executeQuery("SELECT DISTINCT * FROM " + table);
-		if (!resultSet.next()) { //lancia EmptySetException in caso resultSet sia vuoto
-            throw new EmptySetException("Empty set"); // messaggio più specifico?
+		if (!resultSet.next()) { //lancia EmptySetException 
+            throw new EmptySetException("ResultSet vuoto!");
         }
 		do {
 			Example e = new Example();
@@ -78,16 +78,16 @@ public class TableData {
 	 * @param column 	colonna a cui si vuole applicare la query(aggregate)
 	 * @param aggregate 	QUERY_TYPE
 	 * @throws SQLException
-	 * @throws NoValueException
+	 * @throws NoValueException 	eccezione che viene sollevata nel caso in cui ResultSet sia vuoto o null
 	 */
 	public Object getAggregateColumnValue(String table, Column column, QUERY_TYPE aggregate) throws SQLException, NoValueException {
 		Statement stmt = db.getConnection().createStatement();
 		String string = "SELECT " + aggregate + "(" + column.getColumnName() + ") FROM " + table;
 		ResultSet resultSet = stmt.executeQuery(string);
-		if (!resultSet.next()) { //lancia NoValueException in caso resultSet sia vuoto o null
-            throw new NoValueException("Valore non valido"); // messaggio più specifico?
+		if (!resultSet.next()) { //lancia NoValueException
+            throw new NoValueException("ResultSet vuoto!");
         } else if (resultSet.getObject(aggregate + "(" + column.getColumnName() + ")") == null) {
-			throw new NoValueException("Valore non valido");
+			throw new NoValueException("Trovato valore null!");
 		}
 		Object aggregateColumnValue = resultSet.getObject(aggregate + "(" + column.getColumnName() + ")");
 		resultSet.close();

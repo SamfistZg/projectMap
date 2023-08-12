@@ -21,10 +21,11 @@ class Cluster implements Serializable{
 	Cluster(Tuple centroid) {
 		this.centroid = centroid;
 		clusteredData = new HashSet<Integer>();
-	} 
+	}
+
 	/**
 	 * Funzione che restituisce la tupla di centroidi.
-	 * @return	tupla di centroidi
+	 * @return centroid	tupla di centroidi
 	 */
 	public Tuple getCentroid() {
 		return centroid;
@@ -45,7 +46,7 @@ class Cluster implements Serializable{
 	/**
 	 * Funzione che restituisce true se una tupla(id) cambia il cluster, false altrimenti.
 	 * @param id	indice in cui aggiungere la tupla nel ClusteredData
-	 * @return	boolean 	true o false
+	 * @return boolean 	true o false
 	 */
 	public boolean addData(int id) {
 		return clusteredData.add(id);
@@ -116,8 +117,7 @@ class Cluster implements Serializable{
 		}
 		str += "AvgDistance = "+getCentroid().avgDistance(data, array) + "<br/>";
 		return str;
-	}
-
+}
 }
 
 

@@ -2,7 +2,14 @@ package database;
 //import java.sql.ResultSet;
 //import java.sql.SQLException;
 
-public class EmptySetException extends Exception{
+/**
+ * Classe che rappresenta un eccezione personalizzata, chiaramente estende Exception.
+ */
+public class EmptySetException extends Exception {
+    /**
+     * Costruttore di EmptySetException.
+     * @param message   stringa contenente il messaggio di errore da stampare in caso venga sollevata
+     */
     EmptySetException(String message) {
         super(message);
     }
