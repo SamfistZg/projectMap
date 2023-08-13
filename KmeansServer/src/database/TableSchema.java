@@ -7,26 +7,48 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+/**
+ * Classe che rappresenta il database.
+ */
 public class TableSchema {
 	DbAccess db;
 
 	/**
-	 * Classe che rappresenta una colonna di una tabella
+	 * Inner class che rappresenta una colonna di una tabella.
 	 */
 	public class Column {
 		private String name;
 		private String type;
 
+		/**
+		 * Costruttore di Column.
+		 * @param name 	nome della colonna
+		 * @param type 	tipo della colonna
+		 */
 		Column(String name, String type) {
 			this.name = name;
 			this.type = type;
 		}
+
+		/**
+		 * Funzione che restituisce il nome della colonna.
+		 * @return
+		 */
 		public String getColumnName() {
 			return name;
 		}
+
+		/**
+		 * Funzione che restituisce true se il tipo della colonna è un number, false altrimenti.
+		 * @return
+		 */
 		public boolean isNumber() {
 			return type.equals("number");
 		}
+
+		/**
+		 * Funzione che stampa nome e tipo della colonna, è un override.
+		 */
 		public String toString() {
 			return name + ": " + type;
 		}
@@ -34,7 +56,14 @@ public class TableSchema {
 
 	List<Column> tableSchema = new ArrayList<Column>();
 	
+	/**
+	 * Funzione che inserisce in tableSchema i tipi.
+	 * @param db 	database a cui ci si vuole connettere.
+	 * @param tableName 	nome della tabella che si vuole riempire
+	 * @throws SQLException
+	 */
 	public TableSchema(DbAccess db, String tableName) throws SQLException {
+
 		this.db = db;
 		HashMap<String,String> mapSQL_JAVATypes = new HashMap<String, String>();
 		//http://java.sun.com/j2se/1.3/docs/guide/jdbc/getstart/mapping.html
@@ -62,18 +91,20 @@ public class TableSchema {
 			res.close();
 	    }
 	
-		/**
-		 * Questa funzione è la nuova getNumberOfAttributes che abbiamo in Data.
-		 */
-		public int getNumberOfAttributes() {
-			return tableSchema.size();
-		}
-		
-		/**
-		 * restituisce la colonna di tableShema.
-		 */
-		public Column getColumn(int index) {
-			return tableSchema.get(index);
-		}
+	/**
+	* Funzione che resituisce il numero di Attributes.
+	* @return int 	numero di attributes 
+	*/
+	public int getNumberOfAttributes() {
+		return tableSchema.size();
 	}
-	
+		
+	/**
+	* Funzione che restituisce la colonna di tableShema al indice index passato in input.
+	* @param index 	indice
+	* @return Column 	colonna al indice index 
+	*/
+	public Column getColumn(int index) {
+		return tableSchema.get(index);
+	}
+}

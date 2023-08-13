@@ -3,6 +3,9 @@ import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 
+/**
+ * Classe che rappresenta il MultiServer.
+ */
 public class MultiServer {
     private static final int DEFAULT_PORT = 8080;
     private static final String DEFAULT_IP_ADDRESS = "127.0.0.1";
@@ -11,7 +14,7 @@ public class MultiServer {
 
     /**
      * Costruttore di MultiServer.
-     * @param port
+     * @param port  numero di port 
      * @throws IOException
      */
      public MultiServer(int port) throws IOException {

@@ -6,15 +6,19 @@ import java.net.InetAddress;
 import java.net.Socket;
 import java.net.SocketException;
 import keyboardinput.Keyboard;
+
+/**
+ * Classe che rappresenta il MainTest.
+ */
 public class MainTest {
 
 	private ObjectOutputStream out;
 	private ObjectInputStream in ; // stream con richieste del client
 	
 	/**
-	 * Costruttore di MainTest
-	 * @param ip
-	 * @param port
+	 * Costruttore di MainTest.
+	 * @param ip 	indirizzo ip
+	 * @param port 	numero di port
 	 * @throws IOException
 	 */
 	public MainTest(String ip, int port) throws IOException{
@@ -29,7 +33,7 @@ public class MainTest {
 	
 	/**
 	 * Metodo che stampa il menu e restituisce la scelta.
-	 * @return
+	 * @return answer 	scelta fatta dal utente
 	 */
 	private int menu() {
 		int answer;
@@ -46,9 +50,9 @@ public class MainTest {
 	
 	/**
 	 * Metodo che prende le informazioni da tastiera da parte dell'utente e restituisce l'oggetto sul file precompilato.
-	 * @return
+	 * @return String 	stringa letta dal ObjectInputStream
 	 * @throws SocketException
-	 * @throws ServerException
+	 * @throws ServerException 	eccezione personalizzata che viene lanciata in caso di connessione al server fallita
 	 * @throws IOException
 	 * @throws ClassNotFoundException
 	 */
@@ -70,7 +74,7 @@ public class MainTest {
 	/**
 	 * Metodo che chiede da tastiera all'utente il nome della tabella e lo restituisce al server socket.
 	 * @throws SocketException
-	 * @throws ServerException
+	 * @throws ServerException 	eccezione personalizzata che viene sollevata in caso di connessione al server fallita
 	 * @throws IOException
 	 * @throws ClassNotFoundException
 	 */
@@ -87,9 +91,9 @@ public class MainTest {
 
 	/**
 	 * Metodo che legge da server socket e stampa i cluster.
-	 * @return
+	 * @return String 	stringa contenente i cluster letti dal ObjectInputStream
 	 * @throws SocketException
-	 * @throws ServerException
+	 * @throws ServerException 	eccezione personalizzata che viene lanciata in caso di connessione al server fallita
 	 * @throws IOException
 	 * @throws ClassNotFoundException
 	 */
@@ -105,9 +109,13 @@ public class MainTest {
 		}
 		else throw new ServerException(result);
 	}
-	
+
 	/**
-	 * Metodo che salva i cluster 
+	 * Metodo che salva i cluster su file.
+	 * @throws SocketException
+	 * @throws ServerException 	eccezione personalizzata che viene sollevata in caso di connessione al server fallita
+	 * @throws IOException
+	 * @throws ClassNotFoundException
 	 */
 	private void storeClusterInFile() throws SocketException, ServerException, IOException, ClassNotFoundException{
 		out.writeObject(2);

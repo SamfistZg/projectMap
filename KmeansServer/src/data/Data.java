@@ -17,7 +17,9 @@ import java.util.LinkedList;
 import java.util.Set;
 //import static data.OutOfRangeSampleSize.wrongRange;;
 
-
+/**
+ * Classe che rappresenta il dataset.
+ */
 public class Data {
 
 	private List<Example> data = new ArrayList<Example>();
@@ -25,6 +27,14 @@ public class Data {
 	private List<Attribute> attributeSet = new LinkedList<Attribute>();
 	private DbAccess db = new DbAccess();
 
+	/**
+	 * Costruttore di Data
+	 * @param table 	nome della tabella
+	 * @throws SQLException
+	 * @throws EmptySetException
+	 * @throws NoValueException 	eccezione personalizzata che viene lanciata quando il datase risulta vuoto o contiene valori null.
+	 * @throws DatabaseConnectionException
+	 */
 	public Data(String table) throws SQLException, EmptySetException, NoValueException, DatabaseConnectionException{
 		db.initConnection();
 		TableData td = new TableData(this.db);
@@ -48,176 +58,45 @@ public class Data {
 		db.closeConnection();
 	}
 
-
-/*
-	public Data() {
-		// TreeSet di suppporto
-		TreeSet<Example> tempData = new TreeSet<Example>();
-		// creiamo le 14 liste (14 righe di data)
-		Example ex0 = new Example();
-		Example ex1 = new Example();
-		Example ex2 = new Example();
-		Example ex3 = new Example();
-		Example ex4 = new Example();
-		Example ex5 = new Example();
-		Example ex6 = new Example();
-		Example ex7 = new Example();
-		Example ex8 = new Example();
-		Example ex9 = new Example();
-		Example ex10 = new Example();
-		Example ex11 = new Example();
-		Example ex12 = new Example();
-		Example ex13 = new Example();
-
-		// prima colonna 
-		ex0.add(new String ("sunny"));
-		ex1.add(new String ("sunny"));
-		ex2.add(new String ("overcast"));
-		ex3.add(new String ("rain"));
-		ex4.add(new String ("rain"));
-		ex5.add(new String ("rain"));
-		ex6.add(new String ("overcast"));
-		ex7.add(new String ("sunny"));
-		ex8.add(new String ("sunny"));
-		ex9.add(new String ("rain"));
-		ex10.add(new String ("sunny"));
-		ex11.add(new String ("overcast"));
-		ex12.add(new String ("overcast"));
-		ex13.add(new String ("rain"));
-
-		// seconda colonna 
-		ex0.add(Double.valueOf("37.5"));
-		ex1.add(Double.valueOf("38.7"));
-		ex2.add(Double.valueOf("37.5"));
-		ex3.add(Double.valueOf("20.5"));
-		ex4.add(Double.valueOf("20.7"));
-		ex5.add(Double.valueOf("21.2"));
-		ex6.add(Double.valueOf("20.5"));
-		ex7.add(Double.valueOf("21.2"));
-		ex8.add(Double.valueOf("21.2"));
-		ex9.add(Double.valueOf("19.8"));
-		ex10.add(Double.valueOf("3.5"));
-		ex11.add(Double.valueOf("3.6"));
-		ex12.add(Double.valueOf("3.5"));
-		ex13.add(Double.valueOf("3.2"));
-
-		ex0.add(new String ("high"));
-		ex1.add(new String ("high"));
-		ex2.add(new String ("high"));
-		ex3.add(new String ("high"));
-		ex4.add(new String ("normal"));
-		ex5.add(new String ("normal"));
-		ex6.add(new String ("normal"));
-		ex7.add(new String ("high"));
-		ex8.add(new String ("normal"));
-		ex9.add(new String ("normal"));
-		ex10.add(new String ("normal"));
-		ex11.add(new String ("high"));
-		ex12.add(new String ("normal"));
-		ex13.add(new String ("high"));
-
-		ex0.add(new String ("weak"));
-		ex1.add(new String ("strong"));
-		ex2.add(new String ("weak"));
-		ex3.add(new String ("weak"));
-		ex4.add(new String ("weak"));
-		ex5.add(new String ("strong"));
-		ex6.add(new String ("strong"));
-		ex7.add(new String ("weak"));
-		ex8.add(new String ("weak"));
-		ex9.add(new String ("weak"));
-		ex10.add(new String ("strong"));
-		ex11.add(new String ("strong"));
-		ex12.add(new String ("weak"));
-		ex13.add(new String ("strong"));
-
-		// quinta colonna, abbiamo le liste complete (la matrice completa)
-		ex0.add(new String ("no"));
-		ex1.add(new String ("no"));
-		ex2.add(new String ("yes"));
-		ex3.add(new String ("yes"));
-		ex4.add(new String ("yes"));
-		ex5.add(new String ("no"));
-		ex6.add(new String ("yes"));
-		ex7.add(new String ("no"));
-		ex8.add(new String ("yes"));
-		ex9.add(new String ("yes"));
-		ex10.add(new String ("yes"));
-		ex11.add(new String ("yes"));
-		ex12.add(new String ("yes"));
-		ex13.add(new String ("no"));
-
-		numberOfExamples = 14;
-
-		tempData.add(ex0);
-		tempData.add(ex1);
-		tempData.add(ex2);
-		tempData.add(ex3);
-		tempData.add(ex4);
-		tempData.add(ex5);
-		tempData.add(ex6);
-		tempData.add(ex7);
-		tempData.add(ex8);
-		tempData.add(ex9);
-		tempData.add(ex10);
-		tempData.add(ex11);
-		tempData.add(ex12);
-		tempData.add(ex13);
-
-		data = new ArrayList<Example>(tempData);
-
-		// attributeSet ora è una lista e va inizializzata come tale 
-		TreeSet<String> outlookvls = new TreeSet<String>();
-		outlookvls.add("overcast");
-		outlookvls.add("rain");
-		outlookvls.add("sunny");
-		DiscreteAttribute OutlookValues = new DiscreteAttribute("Outlook", 0, outlookvls);
-
-		ContinuousAttribute TemperaturesValues = new ContinuousAttribute("Temperature", 1, 3.2, 38.7);
-
-
-		TreeSet<String> humidityvls = new TreeSet<String>();
-		humidityvls.add("high");
-		humidityvls.add("normal");
-		DiscreteAttribute HumidityValues = new DiscreteAttribute("Humidity", 2, humidityvls);
-
-
-		TreeSet<String> windvls = new TreeSet<String>();
-		windvls.add("weak");
-		windvls.add("strong");
-		DiscreteAttribute WindValues = new DiscreteAttribute("Wind", 3, windvls);
-
-
-		TreeSet<String> playtennisvls = new TreeSet<String>();
-		playtennisvls.add("yes");
-		playtennisvls.add("no");
-		DiscreteAttribute PlayTennisValues = new DiscreteAttribute("PlayTennis", 4, playtennisvls);
-
-		attributeSet.add(0, OutlookValues);
-		attributeSet.add(1, TemperaturesValues);
-		attributeSet.add(2, HumidityValues);
-		attributeSet.add(3, WindValues);
-		attributeSet.add(4, PlayTennisValues);
-
-	}
-	*/
-	
+	/**
+	 * Funzione che restiuisce il numberOfExamples(record della tabella).
+	 * @return numerOfExamples 	numero di record della tabella.
+	 */
 	public int getNumberOfExamples() {
 		return numberOfExamples;
 	}
 
+	/**
+	 * Funzione che restituisce il numero di attibuti.
+	 * @return int 	numero di attributi
+	 */
 	public int getNumberOfAttributes() {
 		return attributeSet.size();
 	}
-	
+
+	/**
+	 * Funzione che restituisce il valore del attributo.
+	 * @param exampleIndex 	indice di riga
+	 * @param attributeIndex 	indice di colonna
+	 * @return Object 	oggetto corrispondente
+	 */
 	public Object getAttributeValue(int exampleIndex, int attributeIndex) {
 		return data.get(exampleIndex).get(attributeIndex);
 	}
 	
+	/**
+	 * Funzione che restituisce l'attibuto in posizione index.
+	 * @param index indice
+	 * @return Attribute attributo corrispondente
+	 */
 	public Attribute getAttribute(int index) {
 		return attributeSet.get(index);
 	}
 	
+	/**
+	 * Funzione che restituisce una stringa contenente i valori della tabella.
+	 * @return table 	stringa contenente tutta la tabella
+	 */
 	public String toString() {
 
 		String table = new String();
@@ -237,8 +116,10 @@ public class Data {
 
 	}
 
-	/*
-	 * restituisce una riga di data (Tuple) in base al tipo di attributo che contiene la lista attributeSet
+	/**
+	 * Funzione che restituisce una tupla in base al tipo di attributo che contiene la lista attributeSet.
+	 * @param index 	indice
+	 * @return tupla 		tupla corrispondente
 	 */
 	public Tuple getItemSet (int index) {
 
@@ -255,6 +136,12 @@ public class Data {
 		return tupla;
 	}
 
+	/**
+	 * Funzione che restituisce il vettore di centroidi.
+	 * @param k numero di cluster desiderati dal utente
+	 * @return centroidIndexes 	vettore di centroidi 
+	 * @throws OutOfRangeSampleSize 	eccezione personalizzata che viene lanciata nel caso in cui venga inserito un numero di cluster minore di 0 o maggiore di numberOfExamples
+	 */
 	public int [] sampling(int k) throws OutOfRangeSampleSize{
 		if (k <= 0 || k > numberOfExamples) {
             throw new OutOfRangeSampleSize("Numero di cluster fuori dal range possibile");
@@ -282,8 +169,11 @@ public class Data {
 		return centroidIndexes;
 	}
 
-	/*
-	 * confronta due righe e resturna true se uguali, false se diverse
+	/**
+	 * Funzione che confronta due righe e restituisce true se uguali, false se diverse.
+	 * @param i 	indice della prima riga 
+	 * @param k 	indice della seconda riga 
+	 * @return res 	true se uguali, false altrimenti
 	 */
 	private boolean compare(int i, int k) {
 
@@ -298,8 +188,11 @@ public class Data {
 
 	}
 	
-	/*
-	 * cambia chiamata di funzione a seconda del tipo di attribute
+	/**
+	 * Funzione che cambia chiamata di funzione a seconda del tipo di attribute passato in input.
+	 * @param idList 	Set<Integer>
+	 * @param attribute 	attributo 	
+	 * @return Object 	risultato di computePrototype(...)
 	 */
 	public Object computePrototype(Set<Integer> idList, Attribute attribute) {
 		if(attribute instanceof ContinuousAttribute) {
@@ -310,9 +203,11 @@ public class Data {
 		}
 	}
 
-	/*
-	 * restituisce il valore (String) che si ripete più volte utilizzando un vettore freq e la funzione frequency 
-	 * per il calcolo di quante volte un attributo si presenta
+	/**
+	 * Funzione che restituisce il valore (String) che si ripete più volte utilizzando un vettore freq e la funzione frequency.
+	 * @param idList 	Set<Integer>
+	 * @param attribute 	attributo 
+	 * @return att[maxIndex] 	valore ripetuto più volte
 	 */
 	public String computePrototype(Set<Integer> idList, DiscreteAttribute attribute) {
 		
@@ -345,9 +240,11 @@ public class Data {
 		return att[maxIndex];
 	}
 
-
 	/**
-	 * Calcola il valore medio per un Continuous Attribute
+	 * Funzione che calcola il valore medio per un Continuous Attribute.
+	 * @param idList Set<interger>
+	 * @param attribute 	attributo
+	 * @return Double 	valore medio 
 	 */
 	public Double computePrototype(Set<Integer> idList, ContinuousAttribute attribute) {
 		double tot = 0;
@@ -357,62 +254,4 @@ public class Data {
 		}
 		return tot / idList.size();
 	}
-
-
-
-	/*
-	 * inner class Example 
-	 */
-/* 
-	class Example implements Comparable<Example> {
-
-		private List<Object> example;
-
-		public Example() {
-			example = new ArrayList<Object>();
-		}
-
-		public void add(Object o) {
-			example.add(o);
-		}
-
-		public Object get(int i) {
-			return example.get(i);
-		}
-
-		public int compareTo(Example ex) {
-
-			int x = 0;
-			for (int i = 0; i<example.size(); i++) {
-					if (example.get(i).equals(ex.get(i))) {
-						x = 0; // oggetti uguali
-					} else if(example.get(i) instanceof String) {
-						String o = (String) example.get(i);
-						String p = (String) ex.get(i);
-						x = o.compareTo(p);
-						return x;
-					} else if(example.get(i) instanceof Double) {
-						Double o = (Double) example.get(i);
-						Double p = (Double) ex.get(i);
-						x = o.compareTo(p);
-						return x;
-					}
-			}
-
-			return x;
-		} 
-
-		public String toString() {
-
-			String str = new String();
-			for (Object o: example) {
-				str += " | " + o;
-			}
-
-			return str;
-		}
-
-	}
-*/
-
 }

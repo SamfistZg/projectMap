@@ -4,18 +4,35 @@ import data.Data;
 import data.Tuple;
 import data.OutOfRangeSampleSize;
 
+/**
+ * Classe che rappresenta il ClusterSet.
+ */
 public class ClusterSet implements Serializable {
 
     private Cluster[] C;
 
+    /**
+     * Costruttore di ClusterSet
+     * @param k     dimensione del vettore di Cluster.
+     */
     ClusterSet(int k) {
         C = new Cluster[k];
     }
 
+    /**
+     * Metodo che aggiunge un Cluster ad una posizione specifica passata in input.
+     * @param clust     cluster che si vuole aggiungere
+     * @param i     indice
+     */
     public void add(Cluster clust, int i) {
         C[i] = clust; 
     }
 
+    /**
+     * Funzione che restituisce il Cluster alla posizione i passata in input.
+     * @param i     indice 
+     * @return C[i]     cluster in posizione i 
+     */
     public Cluster get(int i) {
         return C[i];
     }
@@ -29,6 +46,11 @@ public class ClusterSet implements Serializable {
         }
     }
 
+    /**
+     * Funzione che restituisce il cluster più vicino alla tupla passata in input.
+     * @param tuple     tupla di riferimento
+     * @return nearest  cluster più vicino
+     */
     public Cluster nearestCluster(Tuple tuple) {
 
         Cluster nearest = C[0];
@@ -39,8 +61,10 @@ public class ClusterSet implements Serializable {
         return nearest;
     }
 
-    /*
-     * restituisce il cluster dove è presenta la tupla id
+    /**
+     * Funzione che restituisc e il cluster alla posizione id.
+     * @param id    indice
+     * @return C[i]     cluster alla posizione id
      */
     public Cluster currentCluster(int id) {
 
@@ -52,12 +76,20 @@ public class ClusterSet implements Serializable {
         return null;
     }
 
+    /**
+     * Metodo che aggiorna i centroidi.
+     * @param data  dataset
+     */
     public void updateCentroids(Data data) {
-        for(int i = 0; i<C.length; i++){
+        for(int i = 0; i<C.length; i++) {
             C[i].computeCentroid(data);
         }
     }
 
+    /**
+     * Funzione che resituisce la stringa contenente tutti i cluster, è un override.
+     * @return str  stringa contenente i cluster 
+     */
     public String toString() {
 
         String str = "";
@@ -70,6 +102,11 @@ public class ClusterSet implements Serializable {
 
     }
 
+    /**
+     * Funzione che resituisce la stringa contenente tutti i cluster, è un override.
+     * @param data      dataset
+     * @return str  stringa contenente i cluster 
+     */
     public String toString(Data data) {
 
         String str = "";

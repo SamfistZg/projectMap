@@ -9,6 +9,9 @@ import database.DatabaseConnectionException;
 import database.EmptySetException;
 import database.NoValueException;
 
+/**
+ * Classe che rappresenta il ServerOneClient, stabilisce la connessione tra il server e il client.
+ */
 public class ServerOneClient extends Thread {
     Socket socket;
     ObjectInputStream in;
@@ -17,7 +20,7 @@ public class ServerOneClient extends Thread {
 
     /**
      * Costruttore di ServerOneClient.
-     * @param s
+     * @param s     socket 
      * @throws IOException
      */
     public ServerOneClient(Socket s) throws IOException {

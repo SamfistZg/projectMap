@@ -8,14 +8,28 @@ import java.io.ObjectOutputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
+/**
+ * Classe che rappresenta il KMeansMiner.
+ */
 public class KMeansMiner {
 
     private ClusterSet C;
 
+    /**
+     * Costruttore di kMeansMiner.
+     * @param k     dimensione del ClusterSet
+     */
     public KMeansMiner(int k) {
         C = new ClusterSet(k);
     }
     
+    /**
+     * Costruttore di KMeansMiner.
+     * @param fileName  nome del file
+     * @throws FileNotFoundException
+     * @throws IOException
+     * @throws ClassNotFoundException
+     */
     public KMeansMiner(String fileName) throws FileNotFoundException, IOException, ClassNotFoundException {
         FileInputStream inFile = new FileInputStream(fileName);
         ObjectInputStream inStream = new ObjectInputStream(inFile);
@@ -23,6 +37,12 @@ public class KMeansMiner {
         inStream.close();
     }
     
+    /**
+     * Metodo che salva su file il ClusterSet.
+     * @param fileName  nome del fil e
+     * @throws FileNotFoundException
+     * @throws IOException
+     */
     public void salva(String fileName) throws FileNotFoundException, IOException {
         FileOutputStream outFile = new FileOutputStream(fileName);
         ObjectOutputStream outStream = new ObjectOutputStream(outFile);
@@ -30,10 +50,20 @@ public class KMeansMiner {
         outStream.close();
     }
 
+    /**
+     * Funzione che restituisce il ClusterSet.
+     * @return C    clusterset
+     */
     public ClusterSet getC() {
         return C;
     }
 
+    /**
+     * Funzione che esegue l'algoritmo del kmeans.
+     * @param data  dataset
+     * @return numberOfIterations   numero di iterazioni che sono servite per produrre i cluster desiderati
+     * @throws OutOfRangeSampleSize     eccezione personalizzata che viene lanciata in caso venga inserito un numero di cluster minore di 0 o maggiore del numero di Examples
+     */
     public int kmeans(Data data) throws OutOfRangeSampleSize {
 
         int numberOfIterations = 0;

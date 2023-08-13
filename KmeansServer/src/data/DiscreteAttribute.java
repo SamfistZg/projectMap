@@ -3,11 +3,20 @@ import java.util.Iterator;
 import java.util.TreeSet;
 import java.util.Set;
 
+/**
+ * Classe che rappresenta un DiscreteAttribute.
+ */
 class DiscreteAttribute extends Attribute implements Iterable<String> {
 
     //private String[] values;
     private TreeSet<String> values; /* TreeSet è una collezione di elementi ordinati e non duplicati, struttura ad albero */
 
+    /**
+     * Costruttore di DiscreteAttribute.
+     * @param name nome del attributo
+     * @param index indice del attributo 
+     * @param v     TreeSet<String> contiene valori distinti
+     */
     DiscreteAttribute(String name, int index, TreeSet<String> v) {
 
         super(name, index);
@@ -20,19 +29,30 @@ class DiscreteAttribute extends Attribute implements Iterable<String> {
         
     }
 
+    /**
+     * Funzione che restituisce il numero di valori distinti di values.
+     * @return int  numero di valori distinti di values.
+     */
     public int getNumberOfDistinctValues() {
         return values.size();
     }
 
+    /**
+     * Funzione che restituisce l'iterator per scorrere il TreeSet<String>.
+     * @return iterator     iteratore
+     */
     public Iterator<String> iterator() {
         Iterator<String> iterator = values.iterator();
         return iterator;    
     }
 
-    /*
-     * restituisce quante volte si ripete uno specifico attributo
+    /**
+     * Funzione che restituisce la frequenza di uno specifico attributo.
+     * @param data  dataset
+     * @param idList    Set<Integer>
+     * @param v     stringa contenente il valore del attributo 
+     * @return count    frequenza
      */
-
     public int frequency(Data data, Set<Integer> idList, String v) {
 
         int count = 0;
@@ -46,5 +66,4 @@ class DiscreteAttribute extends Attribute implements Iterable<String> {
             }
         return count; 
     }
-
 }
