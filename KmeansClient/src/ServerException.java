@@ -1,5 +1,5 @@
 /**
- * Classe che rappresenta un'eccezione personalizzata, chiaramente estende Exception.
+ * Classe che rappresenta un'eccezione personalizzata che viene sollevata quando la connessione al server fallisce.
  */
 public class ServerException extends Exception {
     /**

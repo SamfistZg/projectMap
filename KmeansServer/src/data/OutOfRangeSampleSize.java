@@ -1,7 +1,7 @@
 package data;
 
 /**
- * Classe che rappresenta un'eccezione personalizzata, chiaramente estende Exception.
+ * Classe che rappresenta un'eccezione personalizzata che viene sollevate quando si inserisce un numero di cluster minore di 0 o maggiore del numero di numberOfExamples.
  */
 public class OutOfRangeSampleSize extends Exception {
     /**

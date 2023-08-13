@@ -3,7 +3,7 @@ package database;
 //import java.sql.SQLException;
 
 /**
- * Classe che rappresenta un eccezione personalizzata, chiaramente estende Exception.
+ * Classe che rappresenta un eccezione personalizzata che viene sollevata quando il Resultset risulta vuoto.
  */
 public class EmptySetException extends Exception {
     /**

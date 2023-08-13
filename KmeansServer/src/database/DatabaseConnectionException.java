@@ -2,7 +2,7 @@ package database;
 import java.sql.SQLException;
 
 /**
- * Classe che rappresenta un'eccezione personalizzata, chiaramente estende Exception.
+ * Classe che rappresenta un'eccezione personalizzata che viene sollevata quando la connessione al db fallisce.
  */
 public class DatabaseConnectionException extends Exception {
     /**
