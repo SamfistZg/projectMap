@@ -192,7 +192,7 @@ public class MainTest {
 						}
 					} //end while [viene fuori dal while con un db (in alternativa il programma termina)
 						
-					char answer = 'y';//itera per learning al variare di k
+					char answer = 'y'; //itera per learning al variare di k
 					do {
 						try {
 							String clusterSet = main.learningFromDbTable();
@@ -227,16 +227,6 @@ public class MainTest {
 								System.out.println("Risposta non valida!");
 							}
 						} while (answer != 'y' && answer != 'n');
-						/*System.out.println("Vuoi ripetere l'esecuzione? (y/n)");
-						System.out.print("Risposta: ");
-						answer = Keyboard.readChar();
-						if (answer == 'y') {
-							try {
-								main.out.writeObject(true);
-							} catch (IOException e) {
-								System.err.println(e.getMessage());
-							}
-						}*/
 					} while(answer == 'y');
 					break; //fine case 2
 				default:
@@ -266,20 +256,6 @@ public class MainTest {
 					System.out.println("Risposta non valida!");
 				}
 			} while (next != 'y' && next != 'n');
-			/*if (Keyboard.readChar()!='y') {
-				try {
-					main.out.writeObject(false);
-				} catch (IOException e) {
-					System.err.println(e.getMessage());
-				}
-				break;
-			} else {
-				try {
-					main.out.writeObject(true);
-				} catch (IOException e) {
-					System.err.println(e.getMessage());
-				}
-			}*/
 		} while(iter);
 	}
 }

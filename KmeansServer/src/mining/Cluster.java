@@ -31,7 +31,7 @@ class Cluster implements Serializable{
 		return centroid;
 	}
 	
-	/*
+	/**
 	 * Metodo che aggiorna ogni Item di Tuple centroid con il valore maggiormente ripetuto per ogni attribute.
 	 * @param data 	dataset
 	 */
@@ -57,7 +57,7 @@ class Cluster implements Serializable{
 	 * @param id 	indice
 	 * @return res 	true se la tupla è clusterizzata, false altrimenti
 	 */
-	public boolean contain(int id) { // ho cambiato il senso della funzione mettendo il valore (prima era l'indice dell'array) ho rischiato la morte >.<
+	public boolean contain(int id) {
 		Iterator<Integer> it = clusteredData.iterator();
 		boolean res = false;
 		while(it.hasNext()) {
@@ -83,7 +83,7 @@ class Cluster implements Serializable{
 
 		String str="Centroid = (";
 		for(int i = 0; i<centroid.getLength(); i++)
-			str += centroid.get(i).getValue(); // aggiunto getValue();
+			str += centroid.get(i).getValue();
 		str += ")";
 
 		return str;
@@ -98,7 +98,7 @@ class Cluster implements Serializable{
 
 		String str="Centroid = (";
 		for(int i = 0; i<centroid.getLength(); i++)
-			str += centroid.get(i).getValue()+ " "; //aggiunto getValue();
+			str += centroid.get(i).getValue()+ " ";
 		str += ")\nExamples:\n";
 
 		int[] array= new int[clusteredData.size()];

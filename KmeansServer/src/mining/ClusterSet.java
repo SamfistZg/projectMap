@@ -37,7 +37,11 @@ public class ClusterSet implements Serializable {
         return C[i];
     }
 
-    // Inserisce gli indici dei centroidi dentro l'array centroidIndexes e crea i cluster in base a quello.
+    /**
+     * Inserisce gli indici dei centroidi dentro l'array centroidIndexes e crea i cluster in base a quello.
+     * @param data
+     * @throws OutOfRangeSampleSize eccezione personalizzata che viene lanciata in caso venga inserito un numero di cluster minore di 0 o maggiore del numero di Examples
+     */
     public void inizializeCentroids(Data data) throws OutOfRangeSampleSize {
         int[] centroidIndexes = data.sampling(C.length);
         for(int i = 0; i<centroidIndexes.length; i++) {

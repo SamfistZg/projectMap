@@ -75,9 +75,9 @@ public class KMeansMiner {
         // STEP 2
         changedCluster=false;
         for(int i=0; i<data.getNumberOfExamples(); i++) {
-            // stabilisco il claster più vicino passando ogni tupla di data ad ogni iterata
+            // stabilisco il cluster più vicino passando ogni tupla di data ad ogni iterata
             Cluster nearestCluster = C.nearestCluster(data.getItemSet(i)); 
-            Cluster oldCluster = C.currentCluster(i); //cluster che contiene la tupa id = 0
+            Cluster oldCluster = C.currentCluster(i); //cluster che contiene la tupla id = 0
             boolean currentChange = nearestCluster.addData(i);
             if(currentChange)
                 changedCluster=true;

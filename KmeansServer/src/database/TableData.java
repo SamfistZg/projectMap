@@ -34,7 +34,7 @@ public class TableData {
 		Statement stmt = db.getConnection().createStatement();
 		ResultSet resultSet = stmt.executeQuery("SELECT DISTINCT * FROM " + table);
 		if (!resultSet.next()) { //lancia EmptySetException in caso resultSet sia vuoto
-            throw new EmptySetException("Empty set"); // messaggio più specifico?
+            throw new EmptySetException("Empty set");
         }
 		do {
 			Example e = new Example();
@@ -94,6 +94,6 @@ public class TableData {
 		Object aggregateColumnValue = resultSet.getObject(aggregate + "(" + column.getColumnName() + ")");
 		resultSet.close();
 		stmt.close();
-		return aggregateColumnValue; //cambiato il return perchè se restituiamo il ResultSet termina il metodo ma non viene chiuso il ResultSet, sprecando memoria
+		return aggregateColumnValue;
 	}
 }

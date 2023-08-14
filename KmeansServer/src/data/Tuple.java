@@ -16,7 +16,7 @@ public class Tuple implements Serializable {
         tuple = new Item[size];
     }
 
-    /***
+    /**
      * Funzione che restituisce la dimensione di tuple.
      * @return int  dimensione di tuple
      */

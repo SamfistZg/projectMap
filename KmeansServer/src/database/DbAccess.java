@@ -49,7 +49,7 @@ public class DbAccess {
         try {
             conn.close();
         } catch(SQLException e) {
-            System.out.println("SQLException: " + e.getMessage()); //fatto il print del messaggio stile DBAccess.txt
+            System.out.println("SQLException: " + e.getMessage());
 			System.out.println("SQLState: " + e.getSQLState());
 			System.out.println("VendorError: " + e.getErrorCode());
         }
