@@ -44,6 +44,11 @@ public abstract class Item implements Serializable {
         return value.toString();
     }
 
+    /**
+     * Funzione astratta che verrà definita nelle classi concrete DiscreteItem e ContinuousItem.
+     * @param a     oggetto da cui si vuole calcolare la distanza
+     * @return 1 o 0    
+     */
     abstract double distance(Object a); // implementazione diversa per ogni tipo di attributo
 
     /**
