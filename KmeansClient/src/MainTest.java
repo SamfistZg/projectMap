@@ -104,11 +104,10 @@ public class MainTest extends JFrame {
 	 * @throws IOException
 	 * @throws ClassNotFoundException
 	 */
-	String learningFromFile(String nameTable , String nrIterate) throws SocketException, ServerException, IOException, ClassNotFoundException{
-		
+	String learningFromFile(String nameTable , String nrIterate) throws SocketException, ServerException, IOException, ClassNotFoundException, NumberFormatException {
+		int k = Integer.parseInt(nrIterate);
 		out.writeObject(3);
 		out.writeObject(nameTable);
-		int k = Integer.parseInt(nrIterate);
 		out.writeObject(k);
 		String result = (String)in.readObject();
 		if(result.equals("OK"))
@@ -140,9 +139,9 @@ public class MainTest extends JFrame {
 	 * @throws IOException
 	 * @throws ClassNotFoundException
 	 */
-	String learningFromDbTable(String nrCluster) throws SocketException, ServerException, IOException, ClassNotFoundException{
-		out.writeObject(1);
+	String learningFromDbTable(String nrCluster) throws SocketException, ServerException, IOException, ClassNotFoundException, NumberFormatException {
 		int k = Integer.parseInt(nrCluster);
+		out.writeObject(1);
 		out.writeObject(k);
 		String result = (String)in.readObject();
 
@@ -303,7 +302,7 @@ class Scene2 extends JPanel {
         confirmButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 String nameTable = textArea1.getText();
-		        String nrIterate = textArea2.getText();     
+		        String nrIterate = textArea2.getText();
 				try {
 					String kmeans = m.learningFromFile(nameTable, nrIterate);
 					MainTest mainTest = (MainTest) SwingUtilities.getWindowAncestor(Scene2.this);
@@ -313,8 +312,7 @@ class Scene2 extends JPanel {
 					MainTest mainTest = (MainTest) SwingUtilities.getWindowAncestor(Scene2.this);
 					Scene7 scene7 = new Scene7(m, ex.getMessage() + ", riavvia il programma");
 					mainTest.setScene(scene7);
-				}
-				catch (FileNotFoundException ex) {
+				} catch (FileNotFoundException ex) {
 					MainTest mainTest = (MainTest) SwingUtilities.getWindowAncestor(Scene2.this);
 					Scene7 scene7 = new Scene7(m, ex.getMessage() + ", riavvia il programma");
 					mainTest.setScene(scene7);
@@ -326,8 +324,11 @@ class Scene2 extends JPanel {
 					MainTest mainTest = (MainTest) SwingUtilities.getWindowAncestor(Scene2.this);
 					Scene7 scene7 = new Scene7(m, ex.getMessage() + ", riavvia il programma");
 					mainTest.setScene(scene7);
-				}
-				catch (ServerException ex) {
+				} catch (ServerException ex) {
+					MainTest mainTest = (MainTest) SwingUtilities.getWindowAncestor(Scene2.this);
+					Scene7 scene7 = new Scene7(m, ex.getMessage() + ", riavvia il programma");
+					mainTest.setScene(scene7);
+				} catch (NumberFormatException ex) {
 					MainTest mainTest = (MainTest) SwingUtilities.getWindowAncestor(Scene2.this);
 					Scene7 scene7 = new Scene7(m, ex.getMessage() + ", riavvia il programma");
 					mainTest.setScene(scene7);
@@ -445,6 +446,10 @@ class Scene3 extends JPanel {
 						MainTest mainTest = (MainTest) SwingUtilities.getWindowAncestor(Scene3.this);
 						Scene7 scene7 = new Scene7(m, ex.getMessage() + ", riavvia il programma");
 						mainTest.setScene(scene7);
+					} catch (NumberFormatException ex) {
+					MainTest mainTest = (MainTest) SwingUtilities.getWindowAncestor(Scene3.this);
+					Scene7 scene7 = new Scene7(m, ex.getMessage() + ", riavvia il programma");
+					mainTest.setScene(scene7);
 					}
             }
         });	
