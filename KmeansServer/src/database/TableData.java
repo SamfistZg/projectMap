@@ -1,11 +1,11 @@
 package database;
-import java.sql.ResultSet; //P
-import java.sql.SQLException; //P
-import java.sql.Statement; //P
-import java.util.ArrayList; //P
-import java.util.List; //P
-import java.util.TreeSet; //P
-import database.TableSchema.Column; //P
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.TreeSet;
+import database.TableSchema.Column;
 
 /**
  * Classe che rappresenta la tabella dati acquisita dalla connessione al db.
@@ -92,6 +92,6 @@ public class TableData {
 		Object aggregateColumnValue = resultSet.getObject(aggregate + "(" + column.getColumnName() + ")");
 		resultSet.close();
 		stmt.close();
-		return aggregateColumnValue; //cambiato il return perchè se restituiamo il ResultSet termina il metodo ma non viene chiuso il ResultSet, sprecando memoria
+		return aggregateColumnValue;
 	}
 }

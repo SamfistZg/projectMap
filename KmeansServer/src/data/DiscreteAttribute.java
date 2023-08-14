@@ -7,9 +7,7 @@ import java.util.Set;
  * Classe che rappresenta un DiscreteAttribute, estende Attribute.
  */
 class DiscreteAttribute extends Attribute implements Iterable<String> {
-
-    //private String[] values;
-    private TreeSet<String> values; /* TreeSet è una collezione di elementi ordinati e non duplicati, struttura ad albero */
+    private TreeSet<String> values;
 
     /**
      * Costruttore di DiscreteAttribute.

@@ -98,7 +98,7 @@ class Cluster implements Serializable{
 
 		String str="Centroid = (";
 		for(int i = 0; i<centroid.getLength(); i++)
-			str += centroid.get(i).getValue()+ " "; //aggiunto getValue();
+			str += centroid.get(i).getValue()+ " ";
 		str += ")<br/>Examples:<br/>";
 
 		int[] array= new int[clusteredData.size()];

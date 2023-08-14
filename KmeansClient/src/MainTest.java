@@ -10,9 +10,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.BorderLayout;
-
-import keyboardinput.Keyboard;
 
 /**
  * Classe principale del programma, che gestisce la connessione al server e l'interfaccia grafica.

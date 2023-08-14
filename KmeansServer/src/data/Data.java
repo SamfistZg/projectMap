@@ -15,7 +15,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Set;
-//import static data.OutOfRangeSampleSize.wrongRange;;
 
 /**
  * Classe che rappresenta il dataset.
@@ -146,8 +145,6 @@ public class Data {
 		if (k <= 0 || k > numberOfExamples) {
             throw new OutOfRangeSampleSize("Numero di cluster fuori dal range possibile");
         }
-		// spostato la funzione qui, giusto che l'eccezione venga lanciata qua, commentato l'import
-		//wrongRange(k, numberOfExamples);
 		int centroidIndexes[] = new int[k];
 		Random rand = new Random();
 		rand.setSeed(System.currentTimeMillis());
@@ -217,14 +214,14 @@ public class Data {
 		Iterator<String> it = attribute.iterator();
 		while (it.hasNext()) { // funziona
 		for (int i = 0; i<attribute.getNumberOfDistinctValues(); i++) {
-				freq[i] = attribute.frequency(this, idList, it.next()); // changed here con it.next() invece di attribute.getValue(i);
+				freq[i] = attribute.frequency(this, idList, it.next());
 			}
 		}
 
 		int max = freq[0];
 		int maxIndex = 0;
 		for (int i = 1; i<freq.length; i++) {
-			if (max < freq[i]) { // e se abbiamo due indici con valori uguali?
+			if (max < freq[i]) {
 				maxIndex = i;
 			}
 		}
