@@ -16,7 +16,6 @@ public class ServerOneClient extends Thread {
     Socket socket;
     ObjectInputStream in;
     ObjectOutputStream out;
-    KMeansMiner kmeans;
 
     /**
      * Costruttore di ServerOneClient.
