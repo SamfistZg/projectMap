@@ -187,7 +187,7 @@ public class Data {
 	
 	/**
 	 * Funzione che cambia chiamata di funzione a seconda del tipo di attribute passato in input.
-	 * @param idList 	Set<Integer>
+	 * @param idList 	Set di Integer
 	 * @param attribute 	attributo 	
 	 * @return Object 	risultato di computePrototype(...)
 	 */
@@ -202,7 +202,7 @@ public class Data {
 
 	/**
 	 * Funzione che restituisce il valore (String) che si ripete più volte utilizzando un vettore freq e la funzione frequency.
-	 * @param idList 	Set<Integer>
+	 * @param idList 	Set di Integer
 	 * @param attribute 	attributo 
 	 * @return att[maxIndex] 	valore ripetuto più volte
 	 */
@@ -239,7 +239,7 @@ public class Data {
 
 	/**
 	 * Funzione che calcola il valore medio per un Continuous Attribute.
-	 * @param idList Set<interger>
+	 * @param idList Set di Integer
 	 * @param attribute 	attributo
 	 * @return Double 	valore medio 
 	 */

@@ -54,7 +54,7 @@ public abstract class Item implements Serializable {
     /**
      * Metodo che modifica il valore di Item con il valore maggiormente ripetuto per un determinato attributo.
      * @param data  dataset
-     * @param clusteredData     Set<Integer> 
+     * @param clusteredData     Set di Integer
      */
     public void update (Data data, Set<Integer> clusteredData) {
         this.value = data.computePrototype(clusteredData, attribute);
